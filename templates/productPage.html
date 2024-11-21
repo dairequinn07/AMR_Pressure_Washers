@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    {{ super () }}
+<body class="product-page">
+<section id="hero-1618">
+    <div class="cs-container">
+        <div class="cs-content">
+            <div class="cs-left">
+                <h1 class="cs-title" style="color: white;">{{ product['Name'] }}</h1>
+                <span class="cs-price">£{{ product['Price'] }}</span>
+                <p style="color: white;">{{ product['Description'] }}</p>
+                {% if product['Stock'] > 0 %}
+                    <button class="cs-button-solid" style="background-color: green;">Add to Cart</button>
+                {% else %}
+                    <button class="cs-button-solid" disabled>Out of Stock</button>
+                {% endif %}
+            </div>
+            <div class="cs-right-pp">
+                <img src="{{ product['ImageURLs'] }}" alt="{{ product['Name'] }}" class="cs-logo">
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+document.querySelector('.cs-button-solid').addEventListener('click', function() {
+    const button = this;
+    const product = {
+        ID: "{{ product['ID'] }}",
+        Name: "{{ product['Name'] }}",
+        Price: "{{ product['Price'] }}",
+        ImageURLs: "{{ product['ImageURLs'] }}"
+    };
+
+    fetch('/add-to-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(product)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Update the cart display in the navbar
+        document.querySelector('.btn-cart').setAttribute('data-quantity', data.cart_length);
+        button.textContent = "Added to Cart✅";
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+</body>
+{% endblock %}

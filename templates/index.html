@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    {{ super () }}
+<!-- ============================================ -->
+<!--                    Hero                      -->
+<!-- ============================================ -->
+
+<section id="hero-1618">
+    <div class="cs-container">
+        <div class="cs-content">
+            <div class="cs-left">
+                <h1 class="cs-title">The Standard In Professional Cleaning. Leave Finding The Pressure To Us!</h1>
+                <a href="" class="cs-button-solid">Shop Now</a>
+            </div>
+            <div class="cs-right">
+                <img src="/static/AMR_Logo1.png" alt="Company Logo" class="cs-logo">
+            </div>
+        </div>
+        <!-- New Images Row at Bottom -->
+        <div class="hero-images">
+            <img src="/static/brand1.svg" alt="Image 1" class="hero-image">
+            <img src="/static/brand2.svg" alt="Image 2" class="hero-image">
+            <img src="/static/brand3.svg" alt="Image 3" class="hero-image">
+            <img src="/static/brand4.svg" alt="Image 4" class="hero-image">
+            <img src="/static/brand5.svg" alt="Image 5" class="hero-image">
+        </div>
+    </div>
+
+    <!-- Background Image, there's a background image in the CSS for the parallax effect you'll need to change as well if you swap out our images -->
+    <picture class="cs-background">
+        <source media="(max-width: 600px)" srcset="static/background3.png">
+        <source media="(min-width: 601px)" srcset="static/background3.png">
+        <img decoding="async" src="static/background3.png" alt="meeting" width="2250" height="1500" aria-hidden="true">
+    </picture>
+</section>
+<section id="collection-1552">
+    <div class="cs-container">
+        <h1 class="cs-title">Shop By Department</h1>
+        <ul class="cs-card-group">
+                <li class="cs-item cs-item-offer">
+                    <div class="cs-text-wrapper">
+    <!--                    <span class="cs-offer-tag">ONLY $20</span>-->
+                        <a class="cs-category" href="{{ url_for('PetrolPowered') }}">Petrol Powered Washers</a>
+                        <picture class="cs-background" aria-hidden="true">
+                            <source media="(max-width: 600px)"
+                                    srcset="/static/washer1.jpg">
+                            <source media="(min-width: 601px)"
+                                    srcset="/static/washer1.jpg">
+                            <img loading="lazy" decoding="async"
+                                    src="/static/washer1.jpg">
+                                    width="365" height="201">
+                        </picture>
+                    </div>
+                </li>
+            <li class="cs-item">
+                <a class="cs-category" href="{{ url_for('DieselPowered') }}">Diesel Powered Washers</a>
+                <picture class="cs-background" aria-hidden="true">
+                    <source media="(max-width: 600px)"
+                            srcset="/static/diesel.jpg">
+                    <source media="(min-width: 601px)"
+                            srcset="/static/diesel.jpg">
+                    <img loading="lazy" decoding="async"
+                            src="/static/diesel.jpg"
+                            width="365" height="201">
+                </picture>
+            </li>
+            <li class="cs-item">
+                <a class="cs-category" href="{{ url_for('ElectricPowered') }}">Electric Powered Washers</a>
+                <picture class="cs-background" aria-hidden="true">
+                    <source media="(max-width: 600px)"
+                            srcset="/static/electric.jpg">
+                    <source media="(min-width: 601px)"
+                            srcset="/static/electric.jpg">
+                    <img loading="lazy" decoding="async"
+                            src="/static/electric.jpg" width="365"
+                            height="201">
+                </picture>
+            </li>
+            <li class="cs-item">
+                <a class="cs-category" href="/">PTO Driven Washers</a>
+                <picture class="cs-background" aria-hidden="true">
+                    <source media="(max-width: 600px)"
+                            srcset="/static/pto.jpg">
+                    <source media="(min-width: 601px)"
+                            srcset="/static/pto.jpg">
+                    <img loading="lazy" decoding="async"
+                            src="/static/pto.jpg"
+                            width="365" height="201">
+                </picture>
+            </li>
+            <li class="cs-item">
+                <a class="cs-category" href="/">Hot/Cold Washers</a>
+                <picture class="cs-background" aria-hidden="true">
+                    <source media="(max-width: 600px)"
+                            srcset="/static/cold.jpg">
+                    <source media="(min-width: 601px)"
+                            srcset="/static/cold.jpg">
+                    <img loading="lazy" decoding="async"
+                            src="/static/cold.jpg"
+                            width="365" height="201">
+                </picture>
+            </li>
+            <li class="cs-item-wide">
+                <a class="cs-category" href="/">Generators</a>
+                <picture class="cs-background" aria-hidden="true">
+                    <source media="(max-width: 600px)"
+                            srcset="/static/generator.jpg">
+                    <source media="(min-width: 601px)"
+                            srcset="/static/generator.jpg">
+                    <img loading="lazy" decoding="async"
+                            src="/static/generator.jpg"
+                            width="365" height="201">
+                </picture>
+            </li>
+            <li class="cs-item-wide">
+                <a class="cs-category" href="/">Parts</a>
+                <picture class="cs-background" aria-hidden="true">
+                    <source media="(max-width: 600px)"
+                            srcset="/static/parts.webp">
+                    <source media="(min-width: 601px)"
+                            srcset="/static/parts.webp">
+                    <img loading="lazy" decoding="async"
+                            src="/static/parts.webp"
+                            width="365" height="201">
+                </picture>
+            </li>
+        </ul>
+    </div>
+</section>
+<section id="whyChooseUs">
+    <div class="cs-container">
+        <div class="cs-content" style="flex-direction: column;">
+            <h1 class="cs-title">Why Choose Us?</h1>
+            <ul class="cs-card-group">
+            <li class="cs-item">
+                <img class="cs-icon" loading="lazy" decoding="async" src="/static/sponge.webp" alt="icon" width="48" height="48">
+                <h3 class="cs-h3">Cleaning Equipment Specialists</h3>
+                <p class="cs-item-text">
+                    We provide a wide range of machines and components at competitive prices, from small domestic cold washers to industrial diesel machines. With delivery across the UK, Ireland, and mainland Europe, we have the right solution for your needs.
+                </p>
+            </li>
+            <li class="cs-item">
+                <img class="cs-icon" loading="lazy" decoding="async" src="/static/reliable.webp" alt="icon" width="48" height="48">
+                <h3 class="cs-h3">Friendly, Reliable Service</h3>
+                <p class="cs-item-text">
+                    Our new online store makes shopping easy, providing accessible product information, pricing, and a seamless experience for everyone.
+                </p>
+            </li>
+            <li class="cs-item">
+                <img class="cs-icon" loading="lazy" decoding="async" src="/static/warranty.webp" alt="icon" width="48" height="48">
+                <h3 class="cs-h3">Reliable Support You Can Trust</h3>
+                <p class="cs-item-text">
+                    We provide product installation, a 1-year warranty on all new purchases, plus ongoing service and repairs anytime.
+                </p>
+            </li>
+            <li class="cs-item">
+                <img class="cs-icon" loading="lazy" decoding="async" src="/static/find.webp" alt="icon" width="48" height="48">
+                <h3 class="cs-h3">Industry Standard</h3>
+                <p class="cs-item-text">
+                    With in-depth knowledge of the sector, we ensure a hassle-free experience, helping you find the perfect machine with ease.
+                </p>
+            </li>
+        </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+  <title>AMR Pressure Washers</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!--  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-48x48.png') }}" sizes="48x48">-->
+<!--  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">-->
+<!--  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">-->
+<!--  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">-->
+<!--  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">-->
+<!--  <script async src=""></script>-->
+<!-- Google Tag Manager -->
+<!--  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':-->
+<!--  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],-->
+<!--  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=-->
+<!--  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);-->
+<!--  })(window,document,'script','dataLayer','GTM-KRNPGGXR');</script>-->
+  <!-- End Google Tag Manager -->
+
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--  <meta name="theme-color" content="#090706;"/>-->
+<!--  <meta name="viewport" content="initial-scale=1.0, width=device-width, height=device-height"/>-->
+<!--  <meta name="apple-mobile-web-app-capable" content="yes" />-->
+<!--  <meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+<!--  <meta name="description" content="WebDazigns provides custom web development and design services in Belfast, Northern Ireland. We build responsive websites tailored to your business needs.">-->
+<!--  <meta name="keywords" content="web development Belfast, web design Belfast, custom websites Belfast, WebDazigns, Belfast web developer">-->
+<!--  <meta name="author" content="WebDazigns">-->
+
+ <!-- Google-specific meta tags -->
+<!--  <meta name="google" content="notranslate"> &lt;!&ndash; Prevent translation of the page content &ndash;&gt;-->
+<!--  <meta name="googlebot" content="index, follow"> &lt;!&ndash; Instruct Googlebot to index and follow links &ndash;&gt;-->
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ request.url }}">
+
+  <!-- Open Graph Tags for Social Sharing -->
+<!--  <meta property="og:title" content="WebDazigns | Custom Web Development & Design">-->
+<!--  <meta property="og:description" content="Providing custom web development services to businesses looking to establish a strong online presence.">-->
+<!--  <meta property="og:type" content="website">-->
+<!--  <meta property="og:url" content="{{ request.url }}">-->
+<!--  <meta property="og:image" content="{{ url_for('static', filename='webdazigns_logo.svg') }}">-->
+
+  <!-- Twitter Card Tags -->
+<!--  <meta name="twitter:card" content="summary_large_image">-->
+<!--  <meta name="twitter:title" content="WebDazigns | Custom Web Development & Design">-->
+<!--  <meta name="twitter:description" content="We offer responsive, custom websites tailored to your business needs.">-->
+<!--  <meta property="twitter:image:src" content="{{ url_for('static', filename='webdazigns_logo.svg') }}">-->
+
+  <!-- Structured Data Markup for SEO. Populate sameAs values later with social media pages -->
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": "",
+    "url": "",
+    "logo": "",
+    "sameAs": [],
+    "description": ""
+  }
+  </script>
+
+  <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "LocalBusiness",
+  "name": "",
+  "address": {
+    "@type": "",
+    "addressLocality": "",
+    "addressCountry": ""
+  },
+  "url": "",
+  "telephone": "+"
+}
+</script>
+
+  <!-- Language and Locale Tags -->
+  <meta name="language" content="en">
+  <meta name="country" content="GB">
+
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src=""
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ============================================ -->
+<!--                 Navigation                   -->
+<!-- ============================================ -->
+
+<header id="cs-navigation">
+    <div class="cs-container">
+        <!--Nav Logo-->
+        <!--Logo is turned white in the css with a filter on dark mode-->
+        <h1 class="cs-nav-title">AMR Pressure Washers</h1>
+        <!--Navigation List-->
+        <nav class="cs-nav" role="navigation">
+            <!--Mobile Nav Toggle-->
+            <button class="cs-toggle" aria-label="mobile menu toggle">
+                <div class="cs-box" aria-hidden="true">
+                    <span class="cs-line cs-line1" aria-hidden="true"></span>
+                    <span class="cs-line cs-line2" aria-hidden="true"></span>
+                    <span class="cs-line cs-line3" aria-hidden="true"></span>
+                </div>
+            </button>
+            <!-- We need a wrapper div so we can set a fixed height on the cs-ul in case the nav list gets too long from too many dropdowns being opened and needs to have an overflow scroll. This wrapper acts as the background so it can go the full height of the screen and not cut off any overflowing nav items while the cs-ul stops short of the bottom of the screen, which keeps all nav items in view no matter how mnay there are-->
+            <div class="cs-ul-wrapper">
+                <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
+                    <li class="cs-li">
+                        <a href="" class="cs-li-link cs-active">
+                            Home
+                        </a>
+                    </li>
+                    <!--Copy and paste this cs-dropdown list item and replace any .cs-li with this cs-dropdown group to make a new dropdown and it will work-->
+                    <li class="cs-li cs-dropdown" tabindex="0">
+                        <span class="cs-li-link">
+                            Shop
+                            <img class="cs-drop-icon" src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Icons/down-gold.svg" alt="dropdown icon" width="15" height="15" decoding="async" aria-hidden="true">
+                        </span>
+                        <ul class="cs-drop-ul">
+                            <li class="cs-drop-li">
+                                <a href="{{ url_for('PetrolPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Petrol Powered Washers</a>
+                            </li>
+                            <li class="cs-drop-li">
+                                <a href="{{ url_for('DieselPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Diesel Powered Washers</a>
+                            </li>
+                            <li class="cs-drop-li">
+                                <a href="{{ url_for('ElectricPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Electric Powered Washers</a>
+                            </li>
+                            <li class="cs-drop-li">
+                                <a href="" class="cs-li-link cs-drop-link">PTO Powered Washers</a>
+                            </li>
+                            <li class="cs-drop-li">
+                                <a href="" class="cs-li-link cs-drop-link">Generators</a>
+                            </li>
+                            <li class="cs-drop-li">
+                                <a href="" class="cs-li-link cs-drop-link">Parts</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="cs-contact-group">
+            <a href="tel:+447512912741" class="cs-phone">
+                <img class="cs-phone-icon" src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Icons/phone-1a.svg" alt="logo" width="24" height="24" aria-hidden="true" decoding="async">
+                +447512912741
+            </a>
+            <div class="cs-social">
+                <a href="" class="cs-social-link">
+                    <img class="cs-social-icon" src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/Icons/facebook-1a.svg" alt="logo" width="12" height="12" aria-hidden="true" decoding="async">
+                </a>
+            </div>
+            <button data-quantity="{{ session.get('cart', []) | length }}" class="btn-cart" id="myCart">
+                <svg class="icon-cart" viewBox="0 0 24.38 30.52" height="30.52" width="24.38" xmlns="http://www.w3.org/2000/svg">
+                    <title>icon-cart</title>
+                    <path transform="translate(-3.62 -0.85)" d="M28,27.3,26.24,7.51a.75.75,0,0,0-.76-.69h-3.7a6,6,0,0,0-12,0H6.13a.76.76,0,0,0-.76.69L3.62,27.3v.07a4.29,4.29,0,0,0,4.52,4H23.48a4.29,4.29,0,0,0,4.52-4ZM15.81,2.37a4.47,4.47,0,0,1,4.46,4.45H11.35a4.47,4.47,0,0,1,4.46-4.45Zm7.67,27.48H8.13a2.79,2.79,0,0,1-3-2.45L6.83,8.34h3V11a.76.76,0,0,0,1.52,0V8.34h8.92V11a.76.76,0,0,0,1.52,0V8.34h3L26.48,27.4a2.79,2.79,0,0,1-3,2.44Zm0,0"></path>
+                </svg>
+                <span class="quantity">{{ session.get('cart', []) | length }}</span>  <!-- Dynamically show the number of items in the cart -->
+            </button>
+        </div>
+        <!--Dark Mode toggle, uncomment button code if you want to enable a dark mode toggle-->
+        <!-- <button id="dark-mode-toggle" aria-label="dark mode toggle">
+            <svg class="cs-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" style="enable-background:new 0 0 480 480" xml:space="preserve"><path d="M459.782 347.328c-4.288-5.28-11.488-7.232-17.824-4.96-17.76 6.368-37.024 9.632-57.312 9.632-97.056 0-176-78.976-176-176 0-58.4 28.832-112.768 77.12-145.472 5.472-3.712 8.096-10.4 6.624-16.832S285.638 2.4 279.078 1.44C271.59.352 264.134 0 256.646 0c-132.352 0-240 107.648-240 240s107.648 240 240 240c84 0 160.416-42.688 204.352-114.176 3.552-5.792 3.04-13.184-1.216-18.496z"/></svg>
+            <img class="cs-sun" aria-hidden="true" src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Icons%2Fsun.svg" decoding="async" alt="moon" width="15" height="15">
+        </button> -->
+    </div>
+</header>
+<script>
+    // add classes for mobile navigation toggling
+    var CSbody = document.querySelector("body");
+    const CSnavbarMenu = document.querySelector("#cs-navigation");
+    const CShamburgerMenu = document.querySelector("#cs-navigation .cs-toggle");
+
+    CShamburgerMenu.addEventListener('click', function() {
+        CShamburgerMenu.classList.toggle("cs-active");
+        CSnavbarMenu.classList.toggle("cs-active");
+        CSbody.classList.toggle("cs-open");
+        // run the function to check the aria-expanded value
+        ariaExpanded();
+    });
+
+    // checks the value of aria expanded on the cs-ul and changes it accordingly whether it is expanded or not
+    function ariaExpanded() {
+        const csUL = document.querySelector('#cs-expanded');
+        const csExpanded = csUL.getAttribute('aria-expanded');
+
+        if (csExpanded === 'false') {
+            csUL.setAttribute('aria-expanded', 'true');
+        } else {
+            csUL.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+        // This script adds a class to the body after scrolling 100px
+    // and we used these body.scroll styles to create some on scroll
+    // animations with the navbar
+
+    document.addEventListener('scroll', (e) => {
+        const scroll = document.documentElement.scrollTop;
+        if(scroll >= 100){
+    document.querySelector('body').classList.add('scroll')
+        } else {
+        document.querySelector('body').classList.remove('scroll')
+        }
+    });
+
+
+    // mobile nav toggle code
+    const dropDowns = Array.from(document.querySelectorAll('#cs-navigation .cs-dropdown'));
+        for (const item of dropDowns) {
+            const onClick = () => {
+            item.classList.toggle('cs-active')
+        }
+        item.addEventListener('click', onClick)
+        }
+
+    document.getElementById('myCart').addEventListener('click', function() {
+        window.location.href = '/MyCart'; // Adjust path if your route is different
+    });
+</script>
+{% endblock %}
+</body>
+</html>

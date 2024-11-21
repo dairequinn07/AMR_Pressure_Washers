@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    <section id="cart-page">
+        <h1 class="cart-title" style="text-align: center;">Your Cart</h1>
+        <div class="cart-layout">
+            <!-- Cart Items Section -->
+            <div class="cart-items">
+                {% if cart %}
+                    {% for item in cart %}
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                <img src="{{ item['ImageURLs'] }}" alt="{{ item['Name'] }}">
+                            </div>
+                            <div class="cart-item-details">
+                                <h2 class="cs-text">{{ item['Name'] }}</h2>
+                                <p class="cs-price">£{{ item['Price'] }}</p>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button class="decrease-btn">-</button>
+                                <span class="cart-item-quantity" style="color: black;">{{ item['Quantity'] }}</span>
+                                <button class="increase-btn">+</button>
+                                <button class="remove-btn">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Your cart is empty!</p>
+                {% endif %}
+            </div>
+
+            <!-- Order Summary Section -->
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                </div>
+                <div class="summary-item">
+                    <span>Delivery Fee</span>
+                    <span>£30</span>
+                </div>
+                <div class="summary-item total">
+                    <span>Total</span>
+                </div>
+                <div class="promo-code">
+                    <input type="text" placeholder="Add promo code">
+                    <button>Apply</button>
+                </div>
+                <button class="checkout-btn" onclick="startCheckout()">Go to Checkout →</button>
+            </div>
+        </div>
+    </section>
+<script>
+    function startCheckout() {
+    fetch('/create-checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: {{ cart | tojson }} })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.checkout_url) {
+            window.location.href = data.checkout_url; // Redirect to the Square payment page
+        } else {
+            alert('Error creating checkout.');
+        }
+    });
+}
+</script>
+{% endblock %}
