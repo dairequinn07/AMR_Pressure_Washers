@@ -5,10 +5,7 @@ import pandas as pd
 import openpyxl
 from urllib.parse import urlparse, parse_qs
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
-from square import client
-from square.api import payments_api
-from square.client import Client
-from square.http.auth.o_auth_2 import BearerAuthCredentials
+import stripe
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -17,48 +14,51 @@ app.secret_key = os.environ.get('SECRET_KEY')
 EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
-SQUARE_ACCESS_TOKEN = 'EAAAl9pSAnbXNUGkFdWUy1Y3-j7DOntq6DNaZfdf5OhaBJxWgpnc0uHsTF-ws6P3'
+stripe.api_key = 'sk_test_51QBHQYGVTn4SmrQAGiIq94dGA1TLbVF8TXo1ZB2An4vaxVYHB1otKw5k9sbonM4PHQfrKYITRzvWRX4fX0SXeJTt00t34RO3Cb'
 
-# Initialize Square Client
-client = Client(
-    bearer_auth_credentials=BearerAuthCredentials(
-       access_token=SQUARE_ACCESS_TOKEN
-    ),
-    environment='sandbox')
 
-address = {
-  "address_line_1": '1455 Market St',
-  "address_line_2": 'San Francisco, CA 94103'
-}
+@app.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        # Get cart items from session
+        cart = session.get('cart', [])
 
-@app.route('/create-payment', methods=['POST'])
-def create_payment():
-    data = request.get_json()
-    nonce = data.get('nonce')
-    total_amount = data.get('amount')
+        # Create line items dynamically from the cart
+        line_items = []
+        for item in cart:
+            line_items.append({
+                'price_data': {
+                    'currency': 'gbp',
+                    'product_data': {
+                        'name': item['Name'],
+                    },
+                    'unit_amount': int(item['Price'] * 100),  # Stripe expects amount in cents
+                },
+                'quantity': item['Quantity'],
+            })
 
-    result = client.payments.create_payment(
-        body={
-            "source_id": "cnon:card-nonce-ok",
-            "idempotency_key": "5499a179-689d-48fb-a2f9-56a82cb6c3ca",
-            "amount_money": {
-                "amount": 100,
-                "currency": "GBP"
-            }
-        }
-    )
-    if result.is_success():
-        print(result.body)
-    elif result.is_error():
-        print(result.errors)
+        # Create a new Checkout Session
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=line_items,
+            mode='payment',
+            success_url=url_for('checkout_success', _external=True),  # Ensure this URL is absolute
+            cancel_url=url_for('MyCart', _external=True),  # Redirect back to the cart if payment fails
+        )
+
+        return jsonify({
+            'sessionId': checkout_session.id
+        })
+    except Exception as e:
+        return jsonify(error=str(e)), 403
 
 
 # Step 3: Add HTTPS redirection before any request is processed
-@app.before_request
-def https_redirect():
-    if not request.is_secure and request.headers.get('x-forwarded-proto') != 'https':
-        # Redirect HTTP requests to HTTPS
-        return redirect(request.url.replace('http://', 'https://', 1), code=301)
+# @app.before_request
+# def https_redirect():
+#     if not request.is_secure and request.headers.get('x-forwarded-proto') != 'https':
+#         # Redirect HTTP requests to HTTPS
+#         return redirect(request.url.replace('http://', 'https://', 1), code=301)
 
 
 @app.before_request

@@ -2,8 +2,8 @@
 
 {% block head %}
     {{ super() }}
-    <!-- Include Square's Payment Form SDK -->
-    <script src="https://js.squareup.com/v2/paymentform.js" async onload="initializePaymentForm()" onerror="handleSdkError()"></script>
+    <!-- Include Square's SDK for Sandbox Environment -->
+     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
 {% endblock %}
 
@@ -58,108 +58,31 @@
                     <input type="text" placeholder="Add promo code">
                     <button>Apply</button>
                 </div>
-                <button class="checkout-btn" onclick="startCheckout()">Go to Checkout →</button>
-
-                <!-- Payment Form -->
-                <form id="payment-form">
-                    <div id="card-container"></div>  <!-- This is where the Square card form will appear -->
-                    <button id="card-button" type="button" onclick="processPayment()">Pay £{{ subtotal + 30 }}</button>
-                </form>
+                <button class="checkout-btn" id="checkout-button">Go to Checkout →</button>
                 <div id="payment-status-container"></div>  <!-- This is where you will show payment status messages -->
             </div>
         </div>
     </section>
+<script>
+  // Get your Stripe publishable key from the Dashboard
+  var stripe = Stripe('pk_test_51QBHQYGVTn4SmrQAf6LScScCIii6hqOah3iR7SLkvUV638gqAHYfEbFGYXMDn3Ym59E7zFjI9GSpXxVkBLLCUXO300SMdycUa7'); // replace with your key
+  var checkoutButton = document.getElementById('checkout-button');
 
-    <script>
-        let paymentForm; // Declare the paymentForm variable globally
-
-        // Initialize the payment form when the SDK script is fully loaded
-        function initializePaymentForm() {
-            if (window.SqPaymentForm) {
-                paymentForm = new SqPaymentForm({
-                    applicationId: 'sandbox-sq0idb-Lo9MxUF6efqCduIDwLO14A',  // Replace with your Square application ID
-                    locationId: 'LS1HEYMHR59Q5',  // Replace with your Square location ID
-                    inputClass: 'sq-input',  // Style your form inputs
-                    inputStyles: [{
-                        fontSize: '.9em',
-                        padding: '.5em',
-                        backgroundColor: 'transparent',
-                        color: 'black',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
-                        boxShadow: 'none',
-                    }],
-                    card: {
-                        elementId: 'card-container',
-                        placeholder: 'Card number',
-                    },
-                    callbacks: {
-                        paymentFormLoaded: function() {
-                            console.log("Payment form is loaded.");
-                        },
-                        cardNonceResponseReceived: function(errors, nonce, cardData) {
-                            if (errors) {
-                                // Handle validation errors
-                                console.error(errors);
-                                return;
-                            }
-                            // Send the nonce to your backend to process the payment
-                            processPayment(nonce);
-                        }
-                    }
-                });
-                paymentForm.build();
-            } else {
-                console.error("Square SDK is not loaded correctly.");
-            }
-        }
-
-        // Handle errors if the SDK fails to load
-        function handleSdkError() {
-            console.error("Error loading the Square SDK. Please check your internet connection.");
-            alert("Error loading payment form. Please try again later.");
-        }
-
-        // Start the payment process when the checkout button is clicked
-        function startCheckout() {
-            if (!paymentForm) {
-                console.log("Initializing payment form...");
-                initializePaymentForm();
-            } else {
-                console.log("Payment form already initialized.");
-                paymentForm.build(); // Rebuild the form if already initialized
-            }
-        }
-
-        // Handle the payment process on the frontend
-        function processPayment(nonce) {
-            if (!nonce) {
-                alert("Payment information is missing!");
-                return;
-            }
-            // Send the nonce to your backend for processing
-            fetch('/process-payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    nonce: nonce,
-                    amount: {{ subtotal + 30 }}  // Total amount in your chosen currency
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('payment-status-container').innerHTML = "Payment successful!";
-                } else {
-                    document.getElementById('payment-status-container').innerHTML = "Payment failed.";
-                }
-            })
-            .catch(err => {
-                document.getElementById('payment-status-container').innerHTML = "Error processing payment.";
-                console.error(err);
-            });
-        }
-    </script>
+checkoutButton.addEventListener('click', function () {
+    // Call your backend to create the Checkout session
+    fetch('/create-checkout-session', {
+        method: 'POST',
+    })
+    .then(function (response) {
+        return response.json();  // Parse the response JSON
+    })
+    .then(function (sessionId) {
+        // Stripe expects sessionId as a string, not an object
+        return stripe.redirectToCheckout({ sessionId: sessionId.sessionId });
+    })
+    .catch(function (error) {
+        console.error("Error:", error);
+    });
+});
+</script>
 {% endblock %}
