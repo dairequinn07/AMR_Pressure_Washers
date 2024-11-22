@@ -271,6 +271,8 @@ body.product-page {
     display: inline-block;
     position: relative;
     font-family: 'Montserrat', sans-serif;
+    float: left;
+    white-space: nowrap;
   }
 
 .cs-text {
@@ -388,7 +390,7 @@ body.product-page {
   #cs-navigation .cs-container {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
   }
@@ -404,6 +406,7 @@ body.product-page {
     justify-content: flex-start;
     align-items: center;
     z-index: 10;
+    margin-right: auto;
   }
   #cs-navigation .cs-logo img {
     width: 100%;

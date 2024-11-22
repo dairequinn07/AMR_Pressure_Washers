@@ -102,13 +102,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!--Navigation List-->
         <nav class="cs-nav" role="navigation">
             <!--Mobile Nav Toggle-->
-            <button class="cs-toggle" aria-label="mobile menu toggle">
-                <div class="cs-box" aria-hidden="true">
-                    <span class="cs-line cs-line1" aria-hidden="true"></span>
-                    <span class="cs-line cs-line2" aria-hidden="true"></span>
-                    <span class="cs-line cs-line3" aria-hidden="true"></span>
-                </div>
-            </button>
+<!--            <button class="cs-toggle" aria-label="mobile menu toggle">-->
+<!--                <div class="cs-box" aria-hidden="true">-->
+<!--                    <span class="cs-line cs-line1" aria-hidden="true"></span>-->
+<!--                    <span class="cs-line cs-line2" aria-hidden="true"></span>-->
+<!--                    <span class="cs-line cs-line3" aria-hidden="true"></span>-->
+<!--                </div>-->
+<!--            </button>-->
             <!-- We need a wrapper div so we can set a fixed height on the cs-ul in case the nav list gets too long from too many dropdowns being opened and needs to have an overflow scroll. This wrapper acts as the background so it can go the full height of the screen and not cut off any overflowing nav items while the cs-ul stops short of the bottom of the screen, which keeps all nav items in view no matter how mnay there are-->
             <div class="cs-ul-wrapper">
                 <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
@@ -173,30 +173,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </header>
 <script>
-    // add classes for mobile navigation toggling
-    var CSbody = document.querySelector("body");
-    const CSnavbarMenu = document.querySelector("#cs-navigation");
-    const CShamburgerMenu = document.querySelector("#cs-navigation .cs-toggle");
+<!--    // add classes for mobile navigation toggling-->
+<!--    var CSbody = document.querySelector("body");-->
+<!--    const CSnavbarMenu = document.querySelector("#cs-navigation");-->
+<!--    const CShamburgerMenu = document.querySelector("#cs-navigation .cs-toggle");-->
 
-    CShamburgerMenu.addEventListener('click', function() {
-        CShamburgerMenu.classList.toggle("cs-active");
-        CSnavbarMenu.classList.toggle("cs-active");
-        CSbody.classList.toggle("cs-open");
-        // run the function to check the aria-expanded value
-        ariaExpanded();
-    });
+<!--    CShamburgerMenu.addEventListener('click', function() {-->
+<!--        CShamburgerMenu.classList.toggle("cs-active");-->
+<!--        CSnavbarMenu.classList.toggle("cs-active");-->
+<!--        CSbody.classList.toggle("cs-open");-->
+<!--        // run the function to check the aria-expanded value-->
+<!--        ariaExpanded();-->
+<!--    });-->
 
-    // checks the value of aria expanded on the cs-ul and changes it accordingly whether it is expanded or not
-    function ariaExpanded() {
-        const csUL = document.querySelector('#cs-expanded');
-        const csExpanded = csUL.getAttribute('aria-expanded');
+<!--    // checks the value of aria expanded on the cs-ul and changes it accordingly whether it is expanded or not-->
+<!--    function ariaExpanded() {-->
+<!--        const csUL = document.querySelector('#cs-expanded');-->
+<!--        const csExpanded = csUL.getAttribute('aria-expanded');-->
 
-        if (csExpanded === 'false') {
-            csUL.setAttribute('aria-expanded', 'true');
-        } else {
-            csUL.setAttribute('aria-expanded', 'false');
-        }
-    }
+<!--        if (csExpanded === 'false') {-->
+<!--            csUL.setAttribute('aria-expanded', 'true');-->
+<!--        } else {-->
+<!--            csUL.setAttribute('aria-expanded', 'false');-->
+<!--        }-->
+<!--    }-->
 
         // This script adds a class to the body after scrolling 100px
     // and we used these body.scroll styles to create some on scroll
@@ -212,14 +212,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 
 
-    // mobile nav toggle code
-    const dropDowns = Array.from(document.querySelectorAll('#cs-navigation .cs-dropdown'));
-        for (const item of dropDowns) {
-            const onClick = () => {
-            item.classList.toggle('cs-active')
-        }
-        item.addEventListener('click', onClick)
-        }
+<!--    // mobile nav toggle code-->
+<!--    const dropDowns = Array.from(document.querySelectorAll('#cs-navigation .cs-dropdown'));-->
+<!--        for (const item of dropDowns) {-->
+<!--            const onClick = () => {-->
+<!--            item.classList.toggle('cs-active')-->
+<!--        }-->
+<!--        item.addEventListener('click', onClick)-->
+<!--        }-->
 
     document.getElementById('myCart').addEventListener('click', function() {
         window.location.href = '/MyCart'; // Adjust path if your route is different
