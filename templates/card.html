@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/app/css" rel="stylesheet" />
+    <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    <script>
+        const appId = 'sandbox-sq0idb-Lo9MxUF6efqCduIDwLO14A';
+        const locationId = 'LS1HEYMHR59Q5';
+        async function initializeCard(payments) {
+        const card = await payments.card();
+        await card.attach('#card-container');
+        return card;
+        }
+            function startCheckout() {
+    fetch('/create-payment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: {{ cart | tojson }} })
+    })
+}
+
+
+
+document.addEventListener('DOMContentLoaded', async function () {
+  if (!window.Square) {
+    throw new Error('Square.js failed to load properly');
+  }
+  const payments = window.Square.payments(appId, locationId);
+  let card;
+  try {
+    card = await initializeCard(payments);
+  } catch (e) {
+    console.error('Initializing Card failed', e);
+    return;
+  }
+
+  // Step 5.2: create card payment
+});
+ </script>
+</head>
+<body>
+
+</body>
+</html>

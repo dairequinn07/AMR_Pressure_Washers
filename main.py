@@ -5,7 +5,10 @@ import pandas as pd
 import openpyxl
 from urllib.parse import urlparse, parse_qs
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
+from square import client
+from square.api import payments_api
 from square.client import Client
+from square.http.auth.o_auth_2 import BearerAuthCredentials
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -14,57 +17,48 @@ app.secret_key = os.environ.get('SECRET_KEY')
 EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
+SQUARE_ACCESS_TOKEN = 'EAAAl9pSAnbXNUGkFdWUy1Y3-j7DOntq6DNaZfdf5OhaBJxWgpnc0uHsTF-ws6P3'
 
 # Initialize Square Client
-square_client = Client(
-    access_token=os.environ.get('SQUARE_ACCESS_TOKEN'),  # Your Square access token
-    environment='sandbox'  # Use 'production' in live environment
-)
+client = Client(
+    bearer_auth_credentials=BearerAuthCredentials(
+       access_token=SQUARE_ACCESS_TOKEN
+    ),
+    environment='sandbox')
 
+address = {
+  "address_line_1": '1455 Market St',
+  "address_line_2": 'San Francisco, CA 94103'
+}
 
-@app.route('/create-checkout', methods=['POST'])
-def create_checkout():
-    # Parse the cart items from the request
-    cart = request.get_json()['items']
+@app.route('/create-payment', methods=['POST'])
+def create_payment():
+    data = request.get_json()
+    nonce = data.get('nonce')
+    total_amount = data.get('amount')
 
-    # Format the cart items for Square API
-    square_items = [
-        {
-            "name": item['Name'],
-            "quantity": str(item['Quantity']),
-            "base_price_money": {
-                "amount": int(float(item['Price']) * 100),  # Square uses cents
+    result = client.payments.create_payment(
+        body={
+            "source_id": "cnon:card-nonce-ok",
+            "idempotency_key": "5499a179-689d-48fb-a2f9-56a82cb6c3ca",
+            "amount_money": {
+                "amount": 100,
                 "currency": "GBP"
             }
         }
-        for item in cart
-    ]
-
-    # Create Checkout payload
-    body = {
-        "idempotency_key": str(uuid.uuid4()),  # Generate a unique key
-        "order": {
-            "line_items": square_items
-        },
-        "ask_for_shipping_address": True,
-        "redirect_url": "http://127.0.0.1:5000/checkout-success"  # Redirect after successful payment
-    }
-
-    # Call the Square API
-    response = square_client.checkout.create_payment_link(body)
-
-    if response.is_success():
-        return jsonify({"checkout_url": response.body['checkout']['url']})
-    else:
-        return jsonify({"error": response.errors}), 500
+    )
+    if result.is_success():
+        print(result.body)
+    elif result.is_error():
+        print(result.errors)
 
 
 # Step 3: Add HTTPS redirection before any request is processed
-# @app.before_request
-# def https_redirect():
-#     if not request.is_secure and request.headers.get('x-forwarded-proto') != 'https':
-#         # Redirect HTTP requests to HTTPS
-#         return redirect(request.url.replace('http://', 'https://', 1), code=301)
+@app.before_request
+def https_redirect():
+    if not request.is_secure and request.headers.get('x-forwarded-proto') != 'https':
+        # Redirect HTTP requests to HTTPS
+        return redirect(request.url.replace('http://', 'https://', 1), code=301)
 
 
 @app.before_request
@@ -83,7 +77,7 @@ def inject_cart():
 @app.route('/checkout-success')
 def checkout_success():
     # Display success message or store transaction details
-    return render_template('checkout_success.html')
+    return render_template('index.html')
 
 
 @app.route('/add-to-cart', methods=['POST'])
@@ -167,7 +161,8 @@ def ElectricPowered():
 @app.route('/MyCart')
 def MyCart():
     cart = session.get('cart', [])
-    return render_template('MyCart.html', cart=cart)
+    subtotal = sum(item['Price'] * item['Quantity'] for item in cart)
+    return render_template('MyCart.html', cart=cart, subtotal=subtotal)
 
 
 @app.route("/", methods=['GET'])
