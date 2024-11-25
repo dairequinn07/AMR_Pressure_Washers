@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    {{ super () }}
+<!-- ============================================ -->
+<!--                  Collection                  -->
+<!-- ============================================ -->
+
+<!--
+    To add a 4th or 5th collection or more, copy and paste the cs-button and change it's data-filter to the next number, in this case it's 4. Do the same to the cs-listing and its data-category number. And that's it!
+-->
+
+<section id="collection-1602">
+    <div class="cs-container">
+        <div class="cs-content">
+            <h2 class="cs-title">Electric Washers</h2>
+            <div class="cs-button-group">
+<!--                <button class="cs-button" data-filter="one">-->
+<!--                    New Arrival-->
+<!--                </button>-->
+<!--                <button class="cs-button" data-filter="two">-->
+<!--                    Top Rating-->
+<!--                </button>-->
+<!--                <button class="cs-button" data-filter="three">-->
+<!--                    Best Seller-->
+<!--                </button>-->
+            </div>
+        </div>
+        <div class="cs-listing-wrapper">
+            <div class="cs-listing">
+                {% for product in products %}
+                <div class="cs-item" data-id="{{ product['ID'] }}" onclick="viewProduct({{ product['ID'] }})">
+                    <a href="javascript:void(0)" class="cs-link">
+                        <div class="cs-picture-group">
+                            <picture class="cs-picture">
+                                <source media="(max-width: 600px)"
+                                        srcset="{{ product['ImageURLs'] }}">
+                                <source media="(min-width: 601px)"
+                                        srcset="{{ product['ImageURLs'] }}">
+                                <img loading="lazy" decoding="async"
+                                        src="{{ product['ImageURLs'] }}"
+                                        alt="gallery" width="305" height="400">
+                            </picture>
+                            <span class="cs-offer">-20%</span>
+                        </div>
+                        <div class="cs-details">
+                            <h3 class="cs-name">{{ product['Name'] }}</h3>
+                            <div class="cs-actions">
+                                <div class="cs-flex">
+                                    <span class="cs-price">£{{ product['Price'] }}</span>
+                                    <span class="cs-was-price">Ex VAT</span>
+                                    <div class="cs-stars">
+                                        <img class="cs-star"
+                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
+                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
+                                        <img class="cs-star"
+                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
+                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
+                                        <img class="cs-star"
+                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
+                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
+                                        <img class="cs-star"
+                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
+                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
+                                        <img class="cs-star"
+                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
+                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
+                                    </div>
+                                </div>
+                                <button class="cs-buy">
+                                    <img class="cs-basket"
+                                            src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/Icons/ecomm-bag-icon.svg"
+                                            alt="buy" height="24" width="24" loading="lazy" decoding="async">
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function viewProduct(productId) {
+        window.location.href = `/product/${productId}`;
+    }
+</script>
+{% endblock %}

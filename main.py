@@ -1,9 +1,5 @@
 import os
-import re
-import uuid
 import pandas as pd
-import openpyxl
-from urllib.parse import urlparse, parse_qs
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
 from square.client import Client
 
@@ -17,6 +13,29 @@ products_df = pd.read_excel(EXCEL_FILE)
 
 client = Client(access_token="EAAAl9pSAnbXNUGkFdWUy1Y3-j7DOntq6DNaZfdf5OhaBJxWgpnc0uHsTF-ws6P3",
                 environment='sandbox')
+
+
+# Step 3: Add HTTPS redirection before any request is processed
+@app.before_request
+def https_redirect():
+    if not request.is_secure and request.headers.get('x-forwarded-proto') != 'https':
+        # Redirect HTTP requests to HTTPS
+        return redirect(request.url.replace('http://', 'https://', 1), code=301)
+
+
+@app.before_request
+def initialize_cart():
+    if 'cart' not in session:
+        session['cart'] = []
+
+
+@app.after_request
+def add_response_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = "0"
+    response.headers["Pragma"] = "no-cache"
+    return response
+
 
 def create_payment_link():
     data = request.get_json()
@@ -77,20 +96,6 @@ def generate_checkout():
         return jsonify({'payment_link': payment_link['url']}), 200
     else:
         return jsonify({'error': 'Unable to generate payment link'}), 500
-
-
-# Step 3: Add HTTPS redirection before any request is processed
-# @app.before_request
-# def https_redirect():
-#     if not request.is_secure and request.headers.get('x-forwarded-proto') != 'https':
-#         # Redirect HTTP requests to HTTPS
-#         return redirect(request.url.replace('http://', 'https://', 1), code=301)
-
-
-@app.before_request
-def initialize_cart():
-    if 'cart' not in session:
-        session['cart'] = []
 
 
 @app.context_processor
@@ -154,14 +159,6 @@ def sum_filter(cart, attribute, attr=None):
     return sum(float(item[attribute]) for item in cart)
 
 
-@app.after_request
-def add_response_headers(response):
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = "0"
-    response.headers["Pragma"] = "no-cache"
-    return response
-
-
 @app.route('/product/<int:product_id>')
 def product_page(product_id):
     # Fetch the row matching the product_id
@@ -180,24 +177,45 @@ def product_page(product_id):
 
 @app.route('/PetrolPowered')
 def PetrolPowered():
-    return render_template('PetrolPowered.html')
+    products = products_df[products_df['Department'] == 'Petrol Washer'].to_dict(orient='records')
+    return render_template('petrolWashers.html', products=products)
 
 
 @app.route('/DieselPowered')
 def DieselPowered():
-    return render_template('DieselPowered.html')
+    products = products_df[products_df['Department'] == 'Diesel Washer'].to_dict(orient='records')
+    return render_template('dieselWashers.html', products=products)
 
 
 @app.route('/ElectricPowered')
 def ElectricPowered():
-    return render_template('ElectricPowered.html')
+    products = products_df[products_df['Department'] == 'Electric Washer'].to_dict(orient='records')
+    return render_template('electricWashers.html', products=products)
+
+
+@app.route('/PTOPowered')
+def PTOPowered():
+    products = products_df[products_df['Department'] == 'PTO Washer'].to_dict(orient='records')
+    return render_template('ptoWashers.html', products=products)
+
+
+@app.route('/Generators')
+def Generators():
+    products = products_df[products_df['Department'] == 'Generator'].to_dict(orient='records')
+    return render_template('generators.html', products=products)
+
+
+@app.route('/Parts')
+def Parts():
+    products = products_df[products_df['Department'] == 'Parts'].to_dict(orient='records')
+    return render_template('parts.html', products=products)
 
 
 @app.route('/MyCart')
 def MyCart():
     cart = session.get('cart', [])
     subtotal = sum(item['Price'] * item['Quantity'] for item in cart)
-    return render_template('MyCart.html', cart=cart, subtotal=subtotal)
+    return render_template('myCart.html', cart=cart, subtotal=subtotal)
 
 
 @app.route('/remove_from_cart', methods=['POST'])
