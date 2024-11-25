@@ -5,6 +5,7 @@
   <title>AMR Pressure Washers</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <!--  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-48x48.png') }}" sizes="48x48">-->
 <!--  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">-->
 <!--  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">-->
@@ -98,7 +99,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="cs-container">
         <!--Nav Logo-->
         <!--Logo is turned white in the css with a filter on dark mode-->
-        <a href="" class="cs-nav-title" aria-label="back to home" aria-hidden="true">AMR Pressure Washers</a>
+        <a href="{{ url_for('hello_world') }}" class="cs-nav-title" aria-label="back to home" aria-hidden="true">AMR Pressure Washers</a>
         <!--Navigation List-->
         <nav class="cs-nav" role="navigation">
             <!--Mobile Nav Toggle-->
@@ -113,7 +114,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="cs-ul-wrapper">
                 <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
                     <li class="cs-li">
-                        <a href="" class="cs-li-link cs-active">
+                        <a href="{{ url_for('hello_world') }}" class="cs-li-link cs-active">
                             Home
                         </a>
                     </li>
@@ -125,16 +126,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </span>
                         <ul class="cs-drop-ul">
                             <li class="cs-drop-li">
-                                <a href="{{ url_for('PetrolPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Petrol Powered Washers</a>
+                                <a href="{{ url_for('PetrolPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Petrol Washers</a>
                             </li>
                             <li class="cs-drop-li">
-                                <a href="{{ url_for('DieselPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Diesel Powered Washers</a>
+                                <a href="{{ url_for('DieselPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Diesel Washers</a>
                             </li>
                             <li class="cs-drop-li">
-                                <a href="{{ url_for('ElectricPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Electric Powered Washers</a>
+                                <a href="{{ url_for('ElectricPowered') }}" class="cs-li-link cs-drop-link" target="_blank">Electric Washers</a>
                             </li>
                             <li class="cs-drop-li">
-                                <a href="" class="cs-li-link cs-drop-link">PTO Powered Washers</a>
+                                <a href="" class="cs-li-link cs-drop-link">PTO Washers</a>
                             </li>
                             <li class="cs-drop-li">
                                 <a href="" class="cs-li-link cs-drop-link">Generators</a>
@@ -173,6 +174,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const CSnavbarMenu = document.querySelector("#cs-navigation");
     const CShamburgerMenu = document.querySelector("#cs-navigation .cs-toggle");
 
+    document.getElementById('myCart').addEventListener('click', function() {
+        window.location.href = '/MyCart'; // Adjust path if your route is different
+    });
+
     CShamburgerMenu.addEventListener('click', function() {
         CShamburgerMenu.classList.toggle("cs-active");
         CSnavbarMenu.classList.toggle("cs-active");
@@ -193,7 +198,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
     }
 
-        // This script adds a class to the body after scrolling 100px
+    // This script adds a class to the body after scrolling 100px
     // and we used these body.scroll styles to create some on scroll
     // animations with the navbar
 
@@ -206,7 +211,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
     });
 
-
     // mobile nav toggle code
     const dropDowns = Array.from(document.querySelectorAll('#cs-navigation .cs-dropdown'));
         for (const item of dropDowns) {
@@ -215,7 +219,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
         item.addEventListener('click', onClick)
         }
-
 </script>
 {% endblock %}
 </body>
