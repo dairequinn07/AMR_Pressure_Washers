@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Summary</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+.payment-summary {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payment-summary h1 {
+    color: #4CAF50;
+    text-align: center;
+}
+
+.payment-summary p {
+    text-align: center;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.order-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.order-details th, .order-details td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.order-details th {
+    background-color: #f4f4f4;
+}
+
+.delivery-summary, .total-summary {
+    margin: 20px 0;
+}
+
+.delivery-summary p, .total-summary h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.order-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.order-footer a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.order-footer a:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <div class="payment-summary">
+        <h1>Thank You for Your Purchase!</h1>
+        <p>Your order has been successfully placed. Below is a summary of your order:</p>
+
+        <!-- Order Details -->
+        <div class="order-details">
+            <h2>Order Summary</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <td>{{ item['Name'] }}</td>
+                        <td>{{ item['Quantity'] }}</td>
+                        <td>£{{ item['Price'] }}</td>
+                        <td>£{{ item['Price'] * item['Quantity'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Delivery Option -->
+        <div class="delivery-summary">
+            <h3>Delivery Option</h3>
+            <p>
+                {% if delivery_option == 'delivery' %}
+                    Delivery (Fee: £30.00)
+                {% else %}
+                    Store Pickup (Free)
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Total Amount -->
+        <div class="total-summary">
+            <h2>Total Paid: £{{ total_amount }}</h2>
+        </div>
+
+        <!-- Footer -->
+        <div class="order-footer">
+            <p>Need help? <a href="/contact">Contact us</a> for assistance.</p>
+        </div>
+    </div>
+</body>
+</html>

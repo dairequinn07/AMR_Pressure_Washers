@@ -5,7 +5,7 @@ import pandas as pd
 import openpyxl
 from urllib.parse import urlparse, parse_qs
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
-import stripe
+from square.client import Client
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -14,43 +14,71 @@ app.secret_key = os.environ.get('SECRET_KEY')
 EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
-stripe.api_key = 'sk_test_51QBHQYGVTn4SmrQAGiIq94dGA1TLbVF8TXo1ZB2An4vaxVYHB1otKw5k9sbonM4PHQfrKYITRzvWRX4fX0SXeJTt00t34RO3Cb'
 
+client = Client(access_token="EAAAl9pSAnbXNUGkFdWUy1Y3-j7DOntq6DNaZfdf5OhaBJxWgpnc0uHsTF-ws6P3",
+                environment='sandbox')
 
-@app.route('/create-checkout-session', methods=['POST'])
-def create_checkout_session():
-    try:
-        # Get cart items from session
-        cart = session.get('cart', [])
+def create_payment_link():
+    data = request.get_json()
+    delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup' if not provided
+    # Get cart items from session
+    cart = session.get('cart', [])
 
-        # Create line items dynamically from the cart
-        line_items = []
-        for item in cart:
-            line_items.append({
-                'price_data': {
-                    'currency': 'gbp',
-                    'product_data': {
-                        'name': item['Name'],
-                    },
-                    'unit_amount': int(item['Price'] * 100),  # Stripe expects amount in cents
-                },
-                'quantity': item['Quantity'],
-            })
-
-        # Create a new Checkout Session
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=line_items,
-            mode='payment',
-            success_url=url_for('checkout_success', _external=True),  # Ensure this URL is absolute
-            cancel_url=url_for('MyCart', _external=True),  # Redirect back to the cart if payment fails
-        )
-
-        return jsonify({
-            'sessionId': checkout_session.id
+    # Create line items dynamically from the cart
+    line_items = []
+    for item in cart:
+        line_items.append({
+            'name': item['Name'],  # Product name
+            'quantity': str(item['Quantity']),  # Quantity must be a string
+            'base_price_money': {
+                'amount': int(item['Price'] * 100),  # Square expects amount in the smallest currency unit
+                'currency': 'GBP'  # Adjust to your store's currency
+            }
         })
-    except Exception as e:
-        return jsonify(error=str(e)), 403
+
+    # Add delivery fee if selected
+    if delivery_option == 'delivery':
+        line_items.append({
+            'name': 'Delivery Fee',
+            'quantity': '1',
+            'base_price_money': {
+                'amount': 3000, # £30.00
+                'currency': 'GBP',
+            },
+        })
+
+    # Generate the payment link using Square's Checkout API
+    response = client.checkout.create_payment_link(
+        body={
+            "order": {
+                "location_id": "LS1HEYMHR59Q5",  # Replace with your actual location ID
+                "line_items": line_items,  # Use dynamically created line items
+            },
+            "checkout_options": {
+                "redirect_url": url_for('checkout_success', _external=True),  # Redirect after successful payment
+                "ask_for_shipping_address": (delivery_option == 'delivery'), # collect shipping details for delivery
+            }
+        }
+    )
+
+    # Handle the API response
+    if response.is_success():
+        return response.body['payment_link']  # Return the payment link
+    else:
+        # Print errors for debugging
+        print("Error creating payment link:", response.errors)
+        return None
+
+
+@app.route('/create-checkout-link', methods=['POST'])
+def generate_checkout():
+    payment_link = create_payment_link()
+    if payment_link:
+        return jsonify({'payment_link': payment_link['url']}), 200
+    else:
+        return jsonify({'error': 'Unable to generate payment link'}), 500
+
+
 
 
 # Step 3: Add HTTPS redirection before any request is processed
@@ -74,10 +102,19 @@ def inject_cart():
     return dict(cart_length=len(cart))  # Inject cart length into the context
 
 
-@app.route('/checkout-success')
+@app.route('/checkout-success', methods=['GET'])
 def checkout_success():
-    # Display success message or store transaction details
-    return render_template('index.html')
+    # Example session data
+    cart = session.get('cart', [])
+    delivery_option = session.get('deliveryOption', 'pickup')
+    total_amount = session.get('totalAmount', 0)  # Total including delivery if applicable
+
+    return render_template(
+        'payment_summary.html',
+        cart=cart,
+        delivery_option=delivery_option,
+        total_amount=total_amount
+    )
 
 
 @app.route('/add-to-cart', methods=['POST'])

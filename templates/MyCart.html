@@ -2,8 +2,6 @@
 
 {% block head %}
     {{ super() }}
-    <!-- Include Square's SDK for Sandbox Environment -->
-     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
 {% endblock %}
 
@@ -22,7 +20,7 @@
                             </div>
                             <div class="cart-item-details">
                                 <h2 class="cs-text">{{ item['Name'] }}</h2>
-                                <p class="cs-price">£{{ item['Price'] }}</p>
+                                <p class="cs-price">£{{'%0.2f'|format(item['Price']|float)}}</p>
                             </div>
                             <div class="cart-item-controls">
                                 <button class="decrease-btn">-</button>
@@ -44,15 +42,27 @@
                 <h2>Order Summary</h2>
                 <div class="summary-item">
                     <span>Subtotal</span>
-                    <span>£{{ subtotal }}</span>
+                    <span>£{{'%0.2f'|format(subtotal|float)}}</span>
                 </div>
                 <div class="summary-item">
                     <span>Delivery Fee</span>
-                    <span>£30</span>
+                    <span id="delivery-fee">£30</span>
+                </div>
+                <!-- Delivery Option Selection -->
+                <div class="delivery-options">
+                    <label>
+                        <input type="radio" name="deliveryOption" value="delivery" checked>
+                        Delivery: £30
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="deliveryOption" value="pickup">
+                        Store Pickup: Free
+                    </label>
                 </div>
                 <div class="summary-item total">
                     <span>Total</span>
-                    <span>£{{ subtotal + 30 }}</span>
+                    <span id="total-price">£{{'%0.2f'|format(subtotal + 30|float)}}</span>
                 </div>
                 <div class="promo-code">
                     <input type="text" placeholder="Add promo code">
@@ -64,25 +74,57 @@
         </div>
     </section>
 <script>
-  // Get your Stripe publishable key from the Dashboard
-  var stripe = Stripe('pk_test_51QBHQYGVTn4SmrQAf6LScScCIii6hqOah3iR7SLkvUV638gqAHYfEbFGYXMDn3Ym59E7zFjI9GSpXxVkBLLCUXO300SMdycUa7'); // replace with your key
-  var checkoutButton = document.getElementById('checkout-button');
+const subtotal = {{ subtotal }}; // Replace with the actual subtotal value
+const deliveryFeeElement = document.getElementById('delivery-fee');
+const totalPriceElement = document.getElementById('total-price');
 
-checkoutButton.addEventListener('click', function () {
-    // Call your backend to create the Checkout session
-    fetch('/create-checkout-session', {
-        method: 'POST',
-    })
-    .then(function (response) {
-        return response.json();  // Parse the response JSON
-    })
-    .then(function (sessionId) {
-        // Stripe expects sessionId as a string, not an object
-        return stripe.redirectToCheckout({ sessionId: sessionId.sessionId });
-    })
-    .catch(function (error) {
-        console.error("Error:", error);
+// Function to update delivery fee and total
+function updateSummary(deliveryOption) {
+    let deliveryFee = 0;
+
+    if (deliveryOption === 'delivery') {
+        deliveryFee = 30; // Delivery fee
+    }
+
+    // Update the DOM
+    deliveryFeeElement.textContent = `£${deliveryFee}`;
+    totalPriceElement.textContent = `£${(subtotal + deliveryFee).toFixed(2)}`;
+}
+
+// Add event listeners to the radio buttons
+document.querySelectorAll('input[name="deliveryOption"]').forEach((radio) => {
+    radio.addEventListener('change', (event) => {
+        updateSummary(event.target.value);
     });
+});
+
+document.getElementById('checkout-button').addEventListener('click', async () => {
+    try {
+        // Get selected delivery option
+        const selectedOption = document.querySelector('input[name="deliveryOption"]:checked').value;
+        // Send the delivery option along with the request
+        const response = await fetch('/create-checkout-link', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                deliveryOption: selectedOption,
+            }),
+        });
+        const data = await response.json();
+
+        if (data.payment_link) {
+            // Redirect to the Square hosted checkout page
+            window.location.href = data.payment_link;
+        } else {
+            alert('Error: No payment link returned.');
+            console.error(data.error || 'Unknown error');
+        }
+    } catch (error) {
+        alert('An error occurred. Please try again.');
+        console.error('Error fetching payment link:', error);
+    }
 });
 </script>
 {% endblock %}
