@@ -437,16 +437,7 @@ body.product-page {
     z-index: 10;
   }
   #cs-navigation .cs-phone {
-    font-size: 1rem;
-    line-height: 1.5em;
-    text-decoration: none;
-    margin: 0;
-    color: var(--bodyTextColorWhite);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.5rem;
-    transition: opacity 0.3s, color 0.3s;
+    display: none;
   }
   #cs-navigation .cs-phone-icon {
     width: 1.5rem;
@@ -456,7 +447,7 @@ body.product-page {
     border-radius: 6px;
   }
   #cs-navigation .cs-social {
-    display: flex;
+    display: none;
   }
   #cs-navigation .cs-active .cs-line1 {
     top: 50%;
