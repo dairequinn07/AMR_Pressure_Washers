@@ -81,7 +81,7 @@ body.product-page {
 .btn-cart[data-quantity]:not([data-quantity="0"])::after {
   visibility: visible;
   opacity: 1;
-  top: 95%;
+  top: 90%;
 }
 
 .quantity {
