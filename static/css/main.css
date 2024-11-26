@@ -301,7 +301,7 @@ body.product-page {
     display: flex;
     justify-content: space-around; /* Distribute images evenly */
     align-items: center;
-    margin-top: 30px; /* Adjust margin as needed */
+    margin: 0;
 }
 
 .hero-image {
@@ -313,7 +313,7 @@ body.product-page {
 .cs-left {
     flex: 1; /* Takes up available space on the left */
     /* change back to 60% if any problems: */
-    max-width: 100%; /* Limits the width of the left section */
+    width: 100%; /* Limits the width of the left section */
 }
 
 .cs-right, .cs-right-pp {
@@ -1028,14 +1028,19 @@ body.product-page {
     position: relative;
     z-index: 1;
   }
+  #hero-1618 .cs-container {
+    height: 100vh;
+  }
   #hero-1618 .cs-container, #whyChooseUs .cs-container {
     width: 100%;
     max-width: 80rem;
     margin: auto;
     display: flex;
-    justify-content: center;
+    justify-content: unset;
     align-items: center;
     flex-direction: column;
+  }
+  #whyChooseUs .cs-container {
     /* 60px - 180px */
     gap: clamp(3.75rem, 13vw, 11.25rem);
   }
@@ -1215,6 +1220,9 @@ body.product-page {
   #hero-1618 {
     padding-bottom: 0;
   }
+  #hero-1618 .cs-container, #whyChooseUs .cs-container {
+    justify-content: unset;
+  }
   #hero-1618 .cs-container {
     align-items: flex-start;
   }
@@ -1246,6 +1254,9 @@ body.product-page {
     background-repeat: no-repeat;
     /* creates the parallax effect */
     background-attachment: fixed;
+  }
+  #hero-1618 .cs-container, #whyChooseUs .cs-container {
+    justify-content: unset;
   }
   #hero-1618 .cs-background img {
     display: none;
