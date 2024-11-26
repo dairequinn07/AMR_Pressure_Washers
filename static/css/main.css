@@ -1021,7 +1021,7 @@ body.product-page {
   #hero-1618, #cart-page {
     padding: var(--sectionPadding);
     /* 200px - 300px - leaving extra space for the navigation */
-    padding-top: clamp(12.5rem, 31.95vw, 18.75rem);
+    padding-top: clamp(3rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
     height: calc(var(--vh, 1vh) * 100);
