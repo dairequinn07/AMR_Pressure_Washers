@@ -108,13 +108,13 @@ body.product-page {
 .cart-items {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 20px;
+    /*padding: 20px;*/
     background-color: #fff;
 }
 
 .cart-item {
     display: grid;
-    grid-template-columns: 2fr 8fr 2fr;
+    grid-template-columns: 2fr 5fr 2fr;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
@@ -127,10 +127,9 @@ body.product-page {
 }
 
 .cart-item-image img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
 }
 
 .cart-item-details {
@@ -154,16 +153,26 @@ body.product-page {
     gap: 10px;
 }
 
-.cart-item-controls button {
-    background: none;
-    border: 1px solid #ddd;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
+.cart-item-controls .remove-btn {
+  background-color: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-item-controls button:hover {
     background-color: #f4f4f4;
+}
+
+.cart-item-controls span {
+    font-size: 0.9rem;
+    font-weight: bold;
 }
 
 .remove-btn {
@@ -245,9 +254,30 @@ body.product-page {
     .cart-layout {
         grid-template-columns: 1fr; /* Stack items and summary */
     }
-
+    .cart-items {
+        border-radius: 0px;
+        padding: 0px;
+    }
     .cart-item {
-        grid-template-columns: 1fr 2fr; /* Simplify layout for smaller screens */
+        display: flex;
+        flex-direction: column; /* Stack items for smaller screens */
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        /*background-color: #f9f9f9;*/
+    }
+    .cart-item-image img {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    .cart-item-details {
+        text-align: center;
     }
 }
 
