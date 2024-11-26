@@ -302,6 +302,8 @@ body.product-page {
     justify-content: space-around; /* Distribute images evenly */
     align-items: center;
     margin: 0;
+    position: absolute;
+    bottom: 0;
 }
 
 .hero-image {
@@ -1022,6 +1024,7 @@ body.product-page {
     padding-top: clamp(12.5rem, 31.95vw, 18.75rem);
     position: relative;
     z-index: 1;
+    height: calc(var(--vh, 1vh) * 100);
   }
   #whyChooseUs {
     padding: var(--sectionPadding);
@@ -1029,7 +1032,7 @@ body.product-page {
     z-index: 1;
   }
   #hero-1618 .cs-container {
-    height: 100vh;
+    height: 100%;
   }
   #hero-1618 .cs-container, #whyChooseUs .cs-container {
     width: 100%;
