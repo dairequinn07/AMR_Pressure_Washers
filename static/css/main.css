@@ -1247,6 +1247,9 @@ body.product-page {
     background: linear-gradient(90deg, #111926 21.41%, rgba(17, 25, 38, 0.72) 34.98%, rgba(17, 25, 38, 0) 62.53%);
     opacity: 1;
   }
+  #hero-1618, #cart-page {
+    padding-top: clamp(5rem, 25.95vw, 16.75rem);
+  }
 }
 /* Large Desktop Parallax Effect - 100px */
 @media only screen and (min-width: 100rem) {
@@ -1276,6 +1279,9 @@ body.product-page {
   }
   #whyChooseUs .cs-content {
     flex-direction: column;
+  }
+  #hero-1618, #cart-page {
+    padding-top: clamp(5rem, 25.95vw, 16.75rem);
   }
 }
 
