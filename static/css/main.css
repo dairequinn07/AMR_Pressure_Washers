@@ -39,6 +39,7 @@ body.product-page {
   background-color: transparent;
   position: relative;
 }
+
 .btn-cart::after {
   content: attr(data-quantity);
   width: fit-content;
@@ -49,29 +50,40 @@ body.product-page {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   opacity: 0;
   visibility: hidden;
-  transition: .2s linear;
+  transition: 0.2s linear;
   top: 115%;
 }
+
+/* Default cart icon styles */
 .icon-cart {
   width: 24.38px;
   height: 30.52px;
-  transition: .2s linear;
+  transition: 0.2s linear;
 }
+
 .icon-cart path {
   fill: rgb(240, 8, 8);
-  transition: .2s linear;
+  transition: 0.2s linear;
 }
-.btn-cart:hover > .icon-cart {
+
+/* Hover effects */
+.btn-cart:hover > .icon-cart,
+.btn-cart[data-quantity]:not([data-quantity="0"]) > .icon-cart {
   transform: scale(1.2);
 }
-.btn-cart:hover > .icon-cart path {
+
+.btn-cart:hover > .icon-cart path,
+.btn-cart[data-quantity]:not([data-quantity="0"]) > .icon-cart path {
   fill: rgb(186, 34, 233);
 }
-.btn-cart:hover::after {
+
+.btn-cart:hover::after,
+.btn-cart[data-quantity]:not([data-quantity="0"])::after {
   visibility: visible;
   opacity: 1;
-  top: 105%;
+  top: 95%;
 }
+
 .quantity {
   display: none;
 }
@@ -300,7 +312,8 @@ body.product-page {
 
 .cs-left {
     flex: 1; /* Takes up available space on the left */
-    max-width: 60%; /* Limits the width of the left section */
+    /* change back to 60% if any problems: */
+    max-width: 100%; /* Limits the width of the left section */
 }
 
 .cs-right, .cs-right-pp {
@@ -644,7 +657,7 @@ body.product-page {
     height: 0;
     margin: 0;
     padding: 0;
-    background-color: var(--primary);
+    background-color: #fff;
     opacity: 0;
     display: flex;
     visibility: hidden;
@@ -659,9 +672,25 @@ body.product-page {
     list-style: none;
   }
   #cs-navigation .cs-li-link.cs-drop-link {
-    /* 14px - 16px */
-    font-size: clamp(0.875rem, 2vw, 1.25rem);
-    color: #fff;
+    font-size: 1rem;
+    line-height: 1.5em;
+    text-transform: capitalize;
+    text-decoration: none;
+    white-space: nowrap;
+    width: 100%;
+    /* prevents padding from affecting height and width */
+    box-sizing: border-box;
+    padding: 0.75rem;
+    color: var(--headerColor);
+    display: block;
+    transition: color 0.3s, background-color 0.3s;
+  }
+  #cs-navigation .cs-li-link.cs-drop-link:hover {
+    color: var(--bodyTextColorWhite);
+    background-color: var(--primary);
+  }
+  #cs-navigation .cs-li-link.cs-drop-link:before {
+    display: none;
   }
 }
 /* Desktop - 1024px */
@@ -1193,6 +1222,9 @@ body.product-page {
     text-align: left;
     margin-left: 0;
     align-items: flex-start;
+    flex-direction: row;
+    /* centers content horizontally, set to flex-start to left align */
+    align-items: center;
   }
   #whyChooseUs .cs-item {
     grid-column: span 3;
@@ -1217,6 +1249,19 @@ body.product-page {
   }
   #hero-1618 .cs-background img {
     display: none;
+  }
+  #hero-1618 .cs-content {
+    text-align: left;
+    margin-left: 0;
+    align-items: flex-start;
+    /* set text align to left if content needs to be left aligned */
+    display: flex;
+    flex-direction: row;
+    /* centers content horizontally, set to flex-start to left align */
+    align-items: center;
+  }
+  #whyChooseUs .cs-content {
+    flex-direction: column;
   }
 }
 
