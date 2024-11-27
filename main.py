@@ -62,7 +62,7 @@ def create_payment_link():
             'name': 'Delivery Fee',
             'quantity': '1',
             'base_price_money': {
-                'amount': 3000, # £30.00
+                'amount': 3000,
                 'currency': 'GBP',
             },
         })

@@ -24,7 +24,7 @@
                             </div>
                             <div class="cart-item-controls">
                                 <span class="cart-item-quantity" style="color: black;">Quantity: {{ item['Quantity'] }}</span>
-                                <button class="remove-btn">
+                                <button class="remove-btn" data-id="{{ item['ID'] }}">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>
@@ -40,7 +40,7 @@
                 <h2>Order Summary</h2>
                 <div class="summary-item">
                     <span>Subtotal</span>
-                    <span>£{{'%0.2f'|format(subtotal|float)}}</span>
+                    <span id="subtotal">£{{'%0.2f'|format(subtotal|float)}}</span>
                 </div>
                 <div class="summary-item">
                     <span>Delivery Fee</span>
@@ -71,21 +71,31 @@
         </div>
     </section>
 <script>
-const subtotal = {{ subtotal }}; // Replace with the actual subtotal value
+let subtotal = {{ subtotal }}; // Replace with the actual subtotal value
 const deliveryFeeElement = document.getElementById('delivery-fee');
 const totalPriceElement = document.getElementById('total-price');
 
 // Function to update delivery fee and total
 function updateSummary(deliveryOption) {
     let deliveryFee = 0;
+    const itemPrices = document.querySelectorAll('.cs-price');
 
     if (deliveryOption === 'delivery') {
-        deliveryFee = 30; // Delivery fee
+        deliveryFee = 30;
     }
 
+    // Calculate the new subtotal
+    let newSubtotal = 0;
+    itemPrices.forEach(price => {
+        const amount = parseFloat(price.textContent.replace('£', ''));
+        newSubtotal += amount;
+    });
+
     // Update the DOM
-    deliveryFeeElement.textContent = `£${deliveryFee}`;
-    totalPriceElement.textContent = `£${(subtotal + deliveryFee).toFixed(2)}`;
+    subtotal = newSubtotal;
+    document.getElementById('subtotal').textContent = `£${subtotal.toFixed(2)}`;
+    document.getElementById('delivery-fee').textContent = `£${deliveryFee}`;
+    document.getElementById('total-price').textContent = `£${(newSubtotal + deliveryFee).toFixed(2)}`;
 }
 
 // Add event listeners to the radio buttons
@@ -131,25 +141,30 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', async (e) => {
             const itemId = e.target.closest('button').getAttribute('data-id');
 
-            if (confirm('Are you sure you want to delete this item?')) {
+            if (confirm('Are you sure you want to remove this item?')) {
                 try {
-                    const response = await fetch(`/remove_from_cart`, {
+                    const response = await fetch('/remove_from_cart', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': getCsrfToken() // Optional, depending on your CSRF setup
                         },
                         body: JSON.stringify({ id: itemId })
                     });
 
-                    if (response.ok) {
-                        // Remove the item from the DOM or refresh the page
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Remove the item from the DOM
                         e.target.closest('.cart-item').remove();
+
+                        // Optionally update the subtotal/total on the page
+                        updateSummary('delivery');
                     } else {
-                        alert('Failed to delete the item. Please try again.');
+                        alert(data.message || 'Failed to remove item.');
                     }
                 } catch (error) {
                     console.error('Error:', error);
+                    alert('An error occurred while removing the item.');
                 }
             }
         });
