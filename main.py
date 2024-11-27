@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
 from square.client import Client
+from square.http.auth.o_auth_2 import BearerAuthCredentials
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -11,7 +12,7 @@ EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
 
-client = Client(access_token="EAAAl9pSAnbXNUGkFdWUy1Y3-j7DOntq6DNaZfdf5OhaBJxWgpnc0uHsTF-ws6P3",
+client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN']),
                 environment='sandbox')
 
 
