@@ -143,7 +143,7 @@ def squareAuthorization():
         token_info = response.json()
         access_token = token_info.get('access_token')
         merchant_id = token_info.get('merchant_id')
-        expires_in = token_info['expires_in']
+        expires_in = token_info.get('expires_in')  # Get the expiration time in seconds
 
         # Fetch the location_id
         location_id = fetch_location_id(access_token)  # Pass the access_token dynamically
