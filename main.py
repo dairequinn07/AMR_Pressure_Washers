@@ -16,36 +16,6 @@ products_df = pd.read_excel(EXCEL_FILE)
 client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
                 environment='production')
 
-client_id = "sq0idp-9vrmMvFgOQMLVmX358T4Jw"
-client_secret = "sq0csp-ZrT4YrYmmW8wOCgDO9ecrqpJLgeqAVcQWqO_oHQRmuQ"
-authorization_code = "sq0cgp-qsCxD2IzI4KzwjRrWBIoXw"
-redirect_uri = "https://amrpressurewashers-37d8c0c7dd80.herokuapp.com/"
-
-# Token exchange request
-url = "https://connect.squareup.com/oauth2/token"
-headers = {"Content-Type": "application/json"}
-data = {
-    "client_id": client_id,
-    "client_secret": client_secret,
-    "code": authorization_code,
-    "grant_type": "authorization_code",
-    "redirect_uri": redirect_uri,
-}
-
-
-response = requests.post(url, headers=headers, json=data)
-
-if response.status_code == 200:
-    token_info = response.json()
-    access_token = token_info["access_token"]
-    merchant_id = token_info["merchant_id"]
-    print("Access Token:", access_token)
-    print("Merchant ID:", merchant_id)
-
-    # Store the access token securely in your database for future API calls
-else:
-    print("Error exchanging authorization code:", response.json())
-
 
 # Step 3: Add HTTPS redirection before any request is processed
 @app.before_request
@@ -70,9 +40,9 @@ def add_response_headers(response):
 
 
 # Replace with a function to fetch location_id dynamically
-def fetch_location_id():
+def fetch_location_id(access_token):
     headers = {
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
     url = "https://connect.squareup.com/v2/locations"
@@ -90,14 +60,13 @@ def fetch_location_id():
     return None
 
 
-# Fetch location_id during initialization
-LOCATION_ID = fetch_location_id()
-if not LOCATION_ID:
-    raise Exception("Failed to fetch Location ID. Ensure your access token is valid.")
-
-
 # Function to create a payment link dynamically
 def create_payment_link():
+
+    LOCATION_ID = fetch_location_id('EAAAlk-eDVNKQ_nibmTbuAGJYIS97_S46jNXphJkiEi5dmtb0u7l4jNoWH3UULxx')
+    if not LOCATION_ID:
+        raise Exception("Failed to fetch Location ID. Ensure your access token is valid.")
+
     data = request.get_json()
     delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup'
     cart = session.get('cart', [])
@@ -128,7 +97,7 @@ def create_payment_link():
 
     # Create payment link
     headers = {
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Authorization": f"Bearer {'EAAAlk-eDVNKQ_nibmTbuAGJYIS97_S46jNXphJkiEi5dmtb0u7l4jNoWH3UULxx'}",  # ACCESS_TOKEN
         "Content-Type": "application/json",
     }
     url = "https://connect.squareup.com/v2/online-checkout/payment-links"
@@ -149,6 +118,55 @@ def create_payment_link():
     else:
         print("Error creating payment link:", response.json())
         return None
+
+
+@app.route("/squareAuthorization", methods=['GET'])
+def squareAuthorization():
+    # Get the authorization code from the query parameters
+    authorization_code = request.args.get('code')
+
+    if not authorization_code:
+        return "Authorization code missing", 400
+
+    client_id = os.environ.get("SQUARE_APPLICATION_ID")
+    client_secret = os.environ.get("SQUARE_SECRET")
+    redirect_uri = "https://amrpressurewashers-37d8c0c7dd80.herokuapp.com/squareAuthorization"
+
+    # Token exchange request
+    url = "https://connect.squareup.com/oauth2/token"
+    headers = {"Content-Type": "application/json"}
+    data = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "code": authorization_code,
+        "grant_type": "authorization_code",
+        "redirect_uri": redirect_uri,
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    if response.status_code == 200:
+        token_info = response.json()
+        access_token = token_info.get('access_token')
+        merchant_id = token_info.get('merchant_id')
+        print("Access Token:", access_token)
+        print("Merchant ID:", merchant_id)
+
+        # Fetch the location_id
+        location_id = fetch_location_id(access_token)  # Pass the access_token dynamically
+        if location_id:
+            print("Location ID:", location_id)
+        else:
+            print("Failed to fetch Location ID.")
+
+        # Return a response with details displayed to the user
+        return make_response(render_template('squareAuthorization.html',
+                                             access_token=access_token,
+                                             merchant_id=merchant_id,
+                                             location_id=location_id))
+    else:
+        print("Error exchanging authorization code:", response.json())
+        return "Error during authorization code exchange", 500
 
 
 @app.route('/create-checkout-link', methods=['POST'])

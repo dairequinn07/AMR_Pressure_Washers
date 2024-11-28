@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+Access Token: {{ access_token }}
+Merchant ID: {{ merchant_id }}
+Location ID: {{ location_id }}
+{% endblock %}
