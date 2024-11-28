@@ -13,12 +13,12 @@ EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
 
-client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN']),
-                environment='sandbox')
+client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
+                environment='production')
 
 client_id = "sq0idp-9vrmMvFgOQMLVmX358T4Jw"
 client_secret = "sq0csp-ZrT4YrYmmW8wOCgDO9ecrqpJLgeqAVcQWqO_oHQRmuQ"
-authorization_code = "sq0cgp-LGhLCNDvwbW7XvHC8bAezw"
+authorization_code = "sq0cgp-qsCxD2IzI4KzwjRrWBIoXw"
 redirect_uri = "https://amrpressurewashers-37d8c0c7dd80.herokuapp.com/"
 
 # Token exchange request
