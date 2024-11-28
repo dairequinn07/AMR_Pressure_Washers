@@ -143,6 +143,7 @@ def squareAuthorization():
         token_info = response.json()
         access_token = token_info.get('access_token')
         merchant_id = token_info.get('merchant_id')
+        expires_in = token_info['expires_in']
 
         # Fetch the location_id
         location_id = fetch_location_id(access_token)  # Pass the access_token dynamically
@@ -155,7 +156,8 @@ def squareAuthorization():
         return make_response(render_template('squareAuthorization.html',
                                              access_token=access_token,
                                              merchant_id=merchant_id,
-                                             location_id=location_id))
+                                             location_id=location_id,
+                                             expires_in=expires_in))
     else:
         print("Error exchanging authorization code:", response.json())
         return "Error during authorization code exchange", 500
