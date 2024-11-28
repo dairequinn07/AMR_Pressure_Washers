@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import requests
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
 from square.client import Client
 from square.http.auth.o_auth_2 import BearerAuthCredentials
@@ -14,6 +15,36 @@ products_df = pd.read_excel(EXCEL_FILE)
 
 client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN']),
                 environment='sandbox')
+
+client_id = "sq0idp-9vrmMvFgOQMLVmX358T4Jw"
+client_secret = "sq0csp-ZrT4YrYmmW8wOCgDO9ecrqpJLgeqAVcQWqO_oHQRmuQ"
+authorization_code = "sq0cgp-LGhLCNDvwbW7XvHC8bAezw"
+redirect_uri = "https://amrpressurewashers-37d8c0c7dd80.herokuapp.com/"
+
+# Token exchange request
+url = "https://connect.squareup.com/oauth2/token"
+headers = {"Content-Type": "application/json"}
+data = {
+    "client_id": client_id,
+    "client_secret": client_secret,
+    "code": authorization_code,
+    "grant_type": "authorization_code",
+    "redirect_uri": redirect_uri,
+}
+
+
+response = requests.post(url, headers=headers, json=data)
+
+if response.status_code == 200:
+    token_info = response.json()
+    access_token = token_info["access_token"]
+    merchant_id = token_info["merchant_id"]
+    print("Access Token:", access_token)
+    print("Merchant ID:", merchant_id)
+
+    # Store the access token securely in your database for future API calls
+else:
+    print("Error exchanging authorization code:", response.json())
 
 
 # Step 3: Add HTTPS redirection before any request is processed
@@ -38,55 +69,85 @@ def add_response_headers(response):
     return response
 
 
+# Replace with a function to fetch location_id dynamically
+def fetch_location_id():
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    url = "https://connect.squareup.com/v2/locations"
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        locations = response.json().get("locations", [])
+        if locations:
+            print("Fetched Location ID:", locations[0]["id"])
+            return locations[0]["id"]  # Use the first location ID
+        else:
+            print("No locations found.")
+    else:
+        print("Error fetching location ID:", response.json())
+    return None
+
+
+# Fetch location_id during initialization
+LOCATION_ID = fetch_location_id()
+if not LOCATION_ID:
+    raise Exception("Failed to fetch Location ID. Ensure your access token is valid.")
+
+
+# Function to create a payment link dynamically
 def create_payment_link():
     data = request.get_json()
-    delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup' if not provided
-    # Get cart items from session
+    delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup'
     cart = session.get('cart', [])
 
-    # Create line items dynamically from the cart
-    line_items = []
-    for item in cart:
-        line_items.append({
-            'name': item['Name'],  # Product name
-            'quantity': str(item['Quantity']),  # Quantity must be a string
+    # Create line items from the cart
+    line_items = [
+        {
+            'name': item['Name'],
+            'quantity': str(item['Quantity']),
             'base_price_money': {
-                'amount': int(item['Price'] * 100),  # Square expects amount in the smallest currency unit
-                'currency': 'GBP'  # Adjust to your store's currency
-            }
-        })
+                'amount': int(item['Price'] * 100),
+                'currency': 'GBP',
+            },
+        }
+        for item in cart
+    ]
 
-    # Add delivery fee if selected
+    # Add delivery fee if needed
     if delivery_option == 'delivery':
         line_items.append({
             'name': 'Delivery Fee',
             'quantity': '1',
             'base_price_money': {
-                'amount': 3000,
+                'amount': 3000,  # Adjust fee as needed
                 'currency': 'GBP',
             },
         })
 
-    # Generate the payment link using Square's Checkout API
-    response = client.checkout.create_payment_link(
-        body={
-            "order": {
-                "location_id": "LS1HEYMHR59Q5",  # Replace with your actual location ID
-                "line_items": line_items,  # Use dynamically created line items
-            },
-            "checkout_options": {
-                "redirect_url": url_for('checkout_success', _external=True),  # Redirect after successful payment
-                "ask_for_shipping_address": (delivery_option == 'delivery'), # collect shipping details for delivery
-            }
-        }
-    )
+    # Create payment link
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    url = "https://connect.squareup.com/v2/online-checkout/payment-links"
+    body = {
+        "order": {
+            "location_id": LOCATION_ID,
+            "line_items": line_items,
+        },
+        "checkout_options": {
+            "redirect_url": url_for('checkout_success', _external=True),
+            "ask_for_shipping_address": (delivery_option == 'delivery'),
+        },
+    }
+    response = requests.post(url, headers=headers, json=body)
 
-    # Handle the API response
-    if response.is_success():
-        return response.body['payment_link']  # Return the payment link
+    if response.status_code == 200:
+        return response.json().get("payment_link", {}).get("url")
     else:
-        # Print errors for debugging
-        print("Error creating payment link:", response.errors)
+        print("Error creating payment link:", response.json())
         return None
 
 
