@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 import pandas as pd
 import requests
 from flask import Flask, render_template, request, make_response, redirect, jsonify, session, url_for, flash, abort
@@ -7,6 +8,7 @@ from square.http.auth.o_auth_2 import BearerAuthCredentials
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 
 # Load the Excel file once
 EXCEL_FILE = 'products.xlsx'
@@ -301,12 +303,21 @@ def remove_from_cart():
         # Filter the cart to remove the item with the given ID
         session['cart'] = [item for item in session['cart'] if item['ID'] != item_id]
         session.modified = True  # Mark the session as modified
-        return jsonify({"success": True, "message": "Item removed from cart"})
+
+        # Return updated cart length and items
+        return jsonify({
+            "success": True,
+            "message": "Item removed from cart",
+            "cart_length": len(session['cart']),
+            "cart_items": session['cart']
+        })
+
     return jsonify({"success": False, "message": "Cart not found"}), 404
 
 
 @app.route("/", methods=['GET'])
 def hello_world():
+    session.permanent = True
     response = make_response(render_template('index.html'))
     return response
 

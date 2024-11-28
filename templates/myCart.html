@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (data.success) {
                         // Remove the item from the DOM
                         e.target.closest('.cart-item').remove();
-
+                        document.querySelector('.btn-cart').setAttribute('data-quantity', data.cart_length);
                         // Optionally update the subtotal/total on the page
                         updateSummary('delivery');
                     } else {
