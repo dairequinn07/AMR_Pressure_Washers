@@ -174,13 +174,6 @@ def generate_checkout():
         return jsonify({'error': 'Unable to generate payment link'}), 500
 
 
-@app.context_processor
-def inject_cart():
-    # Pass the cart and its length to all templates
-    cart = session.get('cart', [])
-    return dict(cart_length=len(cart))  # Inject cart length into the context
-
-
 @app.route('/checkout-success', methods=['GET'])
 def checkout_success():
     # Example session data
@@ -297,14 +290,12 @@ def MyCart():
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     data = request.get_json()
-    item_id = data.get('id')  # Get the item ID from the request
+    item_id = int(data.get('id'))  # Get the item ID from the request
 
     if 'cart' in session:
-        # Filter the cart to remove the item with the given ID
         session['cart'] = [item for item in session['cart'] if item['ID'] != item_id]
         session.modified = True  # Mark the session as modified
 
-        # Return updated cart length and items
         return jsonify({
             "success": True,
             "message": "Item removed from cart",
@@ -313,6 +304,13 @@ def remove_from_cart():
         })
 
     return jsonify({"success": False, "message": "Cart not found"}), 404
+
+
+@app.context_processor
+def inject_cart():
+    # Pass the cart and its length to all templates
+    cart = session.get('cart', [])
+    return dict(cart_length=len(cart))  # Inject cart length into the context
 
 
 @app.route("/", methods=['GET'])

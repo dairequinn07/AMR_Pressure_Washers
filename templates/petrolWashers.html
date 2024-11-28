@@ -54,25 +54,25 @@
                                 <div class="cs-flex">
                                     <span class="cs-price">£{{ product['Price'] }}</span>
                                     <span class="cs-was-price">Ex VAT</span>
-                                    <div class="cs-stars">
-                                        <img class="cs-star"
-                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
-                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
-                                        <img class="cs-star"
-                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
-                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
-                                        <img class="cs-star"
-                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
-                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
-                                        <img class="cs-star"
-                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
-                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
-                                        <img class="cs-star"
-                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"
-                                                alt="star" height="24" width="24" loading="lazy" decoding="async">
-                                    </div>
+<!--                                    <div class="cs-stars">-->
+<!--                                        <img class="cs-star"-->
+<!--                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"-->
+<!--                                                alt="star" height="24" width="24" loading="lazy" decoding="async">-->
+<!--                                        <img class="cs-star"-->
+<!--                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"-->
+<!--                                                alt="star" height="24" width="24" loading="lazy" decoding="async">-->
+<!--                                        <img class="cs-star"-->
+<!--                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"-->
+<!--                                                alt="star" height="24" width="24" loading="lazy" decoding="async">-->
+<!--                                        <img class="cs-star"-->
+<!--                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"-->
+<!--                                                alt="star" height="24" width="24" loading="lazy" decoding="async">-->
+<!--                                        <img class="cs-star"-->
+<!--                                                src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/MISC/review-star.svg"-->
+<!--                                                alt="star" height="24" width="24" loading="lazy" decoding="async">-->
+<!--                                    </div>-->
                                 </div>
-                                <button class="cs-buy">
+                                <button class="cs-buy" onclick="quickBuy({{ product['ID'] }}, '{{ product['Name'] }}', {{ product['Price'] }}, '{{ product['ImageURLs'] }}')">
                                     <img class="cs-basket"
                                             src="https://csimg.nyc3.cdn.digitaloceanspaces.com/Images/Icons/ecomm-bag-icon.svg"
                                             alt="buy" height="24" width="24" loading="lazy" decoding="async">
@@ -91,6 +91,31 @@
         window.location.href = `/product/${productId}`;
     }
 
+    function quickBuy(productId, productName, productPrice, productImageURLs) {
+
+        event.stopPropagation();
+
+        const product = {
+            ID: productId,
+            Name: productName,
+            Price: productPrice,
+            ImageURLs: productImageURLs
+        };
+
+        fetch('/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the cart display in the navbar with new cart length
+            document.querySelector('.btn-cart').setAttribute('data-quantity', data.cart_length);
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
 </script>
 {% endblock %}
