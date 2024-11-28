@@ -62,8 +62,8 @@ def fetch_location_id(access_token):
 
 # Function to create a payment link dynamically
 def create_payment_link():
-
-    LOCATION_ID = fetch_location_id('EAAAlk-eDVNKQ_nibmTbuAGJYIS97_S46jNXphJkiEi5dmtb0u7l4jNoWH3UULxx')
+    access_token = os.environ.get('ACCESS_TOKEN')
+    LOCATION_ID = fetch_location_id(os.environ.get('ACCESS_TOKEN'))
     if not LOCATION_ID:
         raise Exception("Failed to fetch Location ID. Ensure your access token is valid.")
 
@@ -97,7 +97,7 @@ def create_payment_link():
 
     # Create payment link
     headers = {
-        "Authorization": f"Bearer {'EAAAlk-eDVNKQ_nibmTbuAGJYIS97_S46jNXphJkiEi5dmtb0u7l4jNoWH3UULxx'}",  # ACCESS_TOKEN
+        "Authorization": f"Bearer {access_token}",  # ACCESS_TOKEN
         "Content-Type": "application/json",
     }
     url = "https://connect.squareup.com/v2/online-checkout/payment-links"
@@ -149,8 +149,6 @@ def squareAuthorization():
         token_info = response.json()
         access_token = token_info.get('access_token')
         merchant_id = token_info.get('merchant_id')
-        print("Access Token:", access_token)
-        print("Merchant ID:", merchant_id)
 
         # Fetch the location_id
         location_id = fetch_location_id(access_token)  # Pass the access_token dynamically
