@@ -293,7 +293,7 @@ def remove_from_cart():
     item_id = int(data.get('id'))  # Get the item ID from the request
 
     if 'cart' in session:
-        session['cart'] = [item for item in session['cart'] if item['ID'] != item_id]
+        session['cart'] = [item for item in session['cart'] if int(item['ID']) != int(item_id)]
         session.modified = True  # Mark the session as modified
 
         return jsonify({
