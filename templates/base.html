@@ -229,5 +229,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!--    window.addEventListener('resize', adjustHeight);-->
 </script>
 {% endblock %}
+{% block footer %}
+<footer style="background-color: #F0F0F0; font-family: 'Montserrat', sans-serif; padding: 2rem 1rem; margin-top: 2rem; border-top: 1px solid #ccc;">
+  <div class="footer-container" style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; text-align: center; gap: 1rem;">
+    <!-- Brand Section -->
+    <div class="footer-brand" style="flex: 1; min-width: 200px; margin-bottom: 1.5rem;">
+      <a href="{{ url_for('hello_world') }}" style="text-decoration: none; color: #333; font-weight: 700; font-size: 1.5rem;">
+        AMR Pressure Washers
+      </a>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="footer-links" style="flex: 1; min-width: 200px; margin-bottom: 1.5rem;">
+      <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; text-align: center;">
+          <li><a href="{{ url_for('hello_world') }}" style="text-decoration: none; color: #333;">Home</a></li>
+          <li><a href="{{ url_for('PetrolPowered') }}" style="text-decoration: none; color: #333;">Petrol Washers</a></li>
+          <li><a href="{{ url_for('DieselPowered') }}" style="text-decoration: none; color: #333;">Diesel Washers</a></li>
+          <li><a href="#" style="text-decoration: none; color: #333;">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="footer-contact" style="flex: 1; min-width: 200px; margin-bottom: 1.5rem;">
+      <p style="margin: 0; font-size: 0.9rem; color: #555;">Call us: <a href="tel:+447512912741" style="text-decoration: none; color: #333; font-weight: 500;">+44 7512 912741</a></p>
+      <p style="margin: 0; font-size: 0.9rem; color: #555;">Email: <a href="mailto:support@amrpressurewashers.com" style="text-decoration: none; color: #333; font-weight: 500;">support@amrpressurewashers.com</a></p>
+    </div>
+
+    <!-- Social Icons -->
+    <div class="footer-social" style="flex: 1; min-width: 200px; margin-bottom: 1.5rem; text-align: center;">
+      <a href="#" style="margin-right: 1rem; text-decoration: none; color: #333;">
+        <i class="fab fa-facebook-square" style="font-size: 1.5rem;"></i>
+      </a>
+      <a href="#" style="text-decoration: none; color: #333;">
+        <i class="fab fa-instagram" style="font-size: 1.5rem;"></i>
+      </a>
+    </div>
+  </div>
+  <div style="text-align: center; font-size: 0.8rem; color: #999; margin-top: 1rem;">
+    © {{ current_year or "2024" }} AMR Pressure Washers. All rights reserved.
+  </div>
+</footer>
+{% endblock %}
 </body>
 </html>
