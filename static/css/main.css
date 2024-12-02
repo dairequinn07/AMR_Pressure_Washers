@@ -347,19 +347,12 @@ body.product-page {
     height: auto;
     mix-blend-mode: multiply; /* Allowing the water droplets to come through */
 }
-  #hero-1618 {
-    position: relative;
-    z-index: 1;
-    justify-content: space-between;
-    height: calc(var(--vh, 1vh) * 100);
-  }
-  #cart-page {
+  #hero-1618, #cart-page {
     padding: var(--sectionPadding);
     /* 200px - 300px - leaving extra space for the navigation */
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    justify-content: space-between;
     height: calc(var(--vh, 1vh) * 100);
   }
   #whyChooseUs {
