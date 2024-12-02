@@ -310,15 +310,13 @@ body.product-page {
     display: flex;
     justify-content: space-around; /* Distribute images evenly */
     align-items: center;
-    margin: 0;
-    position: absolute;
-    bottom: 0;
     max-width: 80rem;
+    margin-top: auto;
 }
 
 .hero-image {
     width: 12%; /* Adjust this value depending on the desired size of the images */
-    height: 160px;
+    /*height: 160px;*/
     object-fit: fill;
 }
 
@@ -326,6 +324,8 @@ body.product-page {
     flex: 1; /* Takes up available space on the left */
     /* change back to 60% if any problems: */
     width: 100%; /* Limits the width of the left section */
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .cs-right, .cs-right-pp {
@@ -333,6 +333,8 @@ body.product-page {
     text-align: center; /* Align logo to the right */
     justify-content: flex-end;
     align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .cs-right-pp {
@@ -345,12 +347,19 @@ body.product-page {
     height: auto;
     mix-blend-mode: multiply; /* Allowing the water droplets to come through */
 }
-  #hero-1618, #cart-page {
+  #hero-1618 {
+    position: relative;
+    z-index: 1;
+    justify-content: space-between;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+  #cart-page {
     padding: var(--sectionPadding);
     /* 200px - 300px - leaving extra space for the navigation */
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
+    justify-content: space-between;
     height: calc(var(--vh, 1vh) * 100);
   }
   #whyChooseUs {
@@ -381,8 +390,10 @@ body.product-page {
     max-width: 80rem;
     display: flex;
     flex-direction: column-reverse;
+    justify-content: space-between;
     /* centers content horizontally, set to flex-start to left align */
     align-items: center;
+    flex-grow: 1;
   }
   #whyChooseUs .cs-content {
     /* set text align to left if content needs to be left aligned */
@@ -1671,13 +1682,15 @@ body.product-page {
     /* set text align to left if content needs to be left aligned */
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     /* centers content horizontally, set to flex-start to left align */
     align-items: center;
+    flex-grow: 1;
   }
   #whyChooseUs .cs-content {
     flex-direction: column;
   }
-  #hero-1618, #cart-page {
+  #cart-page {
     padding-top: clamp(5rem, 25.95vw, 16.75rem);
   }
 }
@@ -1700,6 +1713,8 @@ body.product-page {
     flex-direction: row;
     /* centers content horizontally, set to flex-start to left align */
     align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
   }
   #whyChooseUs .cs-item {
     grid-column: span 3;
@@ -1711,7 +1726,7 @@ body.product-page {
     background: linear-gradient(90deg, #111926 21.41%, rgba(17, 25, 38, 0.72) 34.98%, rgba(17, 25, 38, 0) 62.53%);
     opacity: 1;
   }
-  #hero-1618, #cart-page {
+  #cart-page {
     padding-top: clamp(5rem, 25.95vw, 16.75rem);
   }
   #collection-1602 .cs-content {
