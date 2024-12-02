@@ -347,24 +347,28 @@ body.product-page {
     height: auto;
     mix-blend-mode: multiply; /* Allowing the water droplets to come through */
 }
-  #hero-1618, #cart-page {
+  #hero-1618 {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
     height: calc(var(--vh, 1vh) * 100);
   }
-  #cart-page {
+  #cart-page, #hero-1619 {
     padding: var(--sectionPadding);
+    padding-top: clamp(7rem, 15vw, 8rem);
+    position: relative;
+    z-index: 1;
+    height: 100%;
   }
   #whyChooseUs {
     padding: var(--sectionPadding);
     position: relative;
     z-index: 1;
   }
-  #hero-1618 .cs-container {
+  #hero-1618 .cs-container, #hero-1619 .cs-container {
     height: 100%;
   }
-  #hero-1618 .cs-container, #whyChooseUs .cs-container {
+  #hero-1618 .cs-container, #hero-1619 .cs-container, #whyChooseUs .cs-container {
     width: 100%;
     max-width: 80rem;
     margin: auto;
@@ -377,7 +381,7 @@ body.product-page {
     /* 60px - 180px */
     gap: clamp(3.75rem, 13vw, 11.25rem);
   }
-  #hero-1618 .cs-content {
+  #hero-1618 .cs-content, #hero-1619 .cs-content {
     /* set text align to left if content needs to be left aligned */
     text-align: center;
     width: 100%;
@@ -399,7 +403,7 @@ body.product-page {
     /* centers content horizontally, set to flex-start to left align */
     align-items: center;
   }
-  #hero-1618 .cs-topper {
+  #hero-1618 .cs-topper, #hero-1619 .cs-topper {
     /* 13px - 16px */
     font-size: clamp(0.8125rem, 1.5vw, 1rem);
     line-height: 1.2em;
@@ -415,23 +419,12 @@ body.product-page {
     gap: 0.5rem;
     position: relative;
   }
-  #hero-1618 .cs-chevron {
+  #hero-1618 .cs-chevron, #hero-1619 .cs-chevron {
     --chevronColor: var(--primary);
     width: 3rem;
     height: auto;
   }
-/*  #hero-1618 .cs-title {
-    *//* 39px - 61px *//*
-    font-size: clamp(2.4375rem, 6.4vw, 3.8125rem);
-    font-weight: 900;
-    line-height: 1.2em;
-    text-align: inherit;
-    max-width: 100%;
-    margin: 0 0 2.5rem 0;
-    color: var(--headerColor);
-    position: relative;
-  }*/
-  #hero-1618 .cs-text {
+  #hero-1618 .cs-text, #hero-1619 .cs-text {
     /* 16px - 20px */
     font-size: clamp(1rem, 1.95vw, 1.25rem);
     line-height: 1.5em;
@@ -442,7 +435,7 @@ body.product-page {
     margin: 0 0 2.5rem 0;
     color: #fff;
   }
-  #hero-1618 .cs-button-solid {
+  #hero-1618 .cs-button-solid, #hero-1619 .cs-button-solid {
     font-size: 1rem;
     /* 46px - 56px */
     line-height: clamp(2.875rem, 5.5vw, 3.5rem);
@@ -460,7 +453,7 @@ body.product-page {
     text-align: center;
     font-family: 'Montserrat', sans-serif;
   }
-  #hero-1618 .cs-button-solid:before {
+  #hero-1618 .cs-button-solid:before, #hero-1619 .cs-button-solid:before {
     content: '';
     position: absolute;
     display: block;
@@ -474,7 +467,7 @@ body.product-page {
     transition: width .3s;
     border-radius: 62px;
   }
-  #hero-1618 .cs-button-solid:hover:before {
+  #hero-1618 .cs-button-solid:hover:before, #hero-1619 .cs-button-solid:hover:before {
     width: 100%;
   }
   #whyChooseUs .cs-card-group {
@@ -511,7 +504,7 @@ body.product-page {
     height: auto;
     margin: 0 0 1.5rem 0;
   }
-  #hero-1618 .cs-h3 {
+  #hero-1618 .cs-h3, #hero-1619 .cs-h3 {
     /* 20px - 25px */
     font-size: clamp(1.25rem, 2.5vw, 1.5625rem);
     line-height: 1.2em;
@@ -529,7 +522,7 @@ body.product-page {
     padding: 0;
     color: var(--bodyTextColor);
   }
-  #hero-1618 .cs-background {
+  #hero-1618 .cs-background, #hero-1619 .cs-background {
     width: 100%;
     height: 100%;
     display: block;
@@ -539,7 +532,7 @@ body.product-page {
     z-index: -2;
   }
 
-  #hero-1618 .cs-background img {
+  #hero-1618 .cs-background img, #hero-1619 .cs-background img {
     position: absolute;
     top: 0;
     left: 0;
@@ -1655,7 +1648,7 @@ body.product-page {
   #cs-navigation .cs-social {
     display: flex;
   }
-  #hero-1618 .cs-background {
+  #hero-1618 .cs-background, #hero-1619 .cs-background {
     background: url("/static/background3.png");
     background-size: cover;
     background-position: center;
@@ -1663,13 +1656,13 @@ body.product-page {
     /* creates the parallax effect */
     background-attachment: fixed;
   }
-  #hero-1618 .cs-container, #whyChooseUs .cs-container {
+  #hero-1618 .cs-container, #hero-1619 .cs-container, #whyChooseUs .cs-container {
     justify-content: unset;
   }
-  #hero-1618 .cs-background img {
+  #hero-1618 .cs-background img, #hero-1619 .cs-background img {
     display: none;
   }
-  #hero-1618 .cs-content {
+  #hero-1618 .cs-content, #hero-1619 .cs-content {
     text-align: left;
     margin-left: 0;
     align-items: flex-start;
@@ -1684,8 +1677,12 @@ body.product-page {
   #whyChooseUs .cs-content {
     flex-direction: column;
   }
-  #cart-page {
-    padding-top: clamp(5rem, 25.95vw, 16.75rem);
+  #cart-page, #hero-1619 {
+    padding: var(--sectionPadding);
+    padding-top: clamp(7rem, 15vw, 8rem);
+    position: relative;
+    z-index: 1;
+    height: 100%;
   }
 }
 
@@ -1694,13 +1691,13 @@ body.product-page {
   #hero-1618 {
     padding-bottom: 0;
   }
-  #hero-1618 .cs-container, #whyChooseUs .cs-container {
+  #hero-1618 .cs-container, #hero-1619 .cs-container, #whyChooseUs .cs-container {
     justify-content: unset;
   }
-  #hero-1618 .cs-container {
+  #hero-1618 .cs-container, #hero-1619 .cs-container {
     align-items: flex-start;
   }
-  #hero-1618 .cs-content {
+  #hero-1618 .cs-content, #hero-1619 .cs-content {
     text-align: left;
     margin-left: 0;
     align-items: flex-start;
@@ -1713,15 +1710,19 @@ body.product-page {
   #whyChooseUs .cs-item {
     grid-column: span 3;
   }
-  #hero-1618 .cs-background {
+  #hero-1618 .cs-background, #hero-1619 .cs-background {
     height: 100%;
   }
-  #hero-1618 .cs-background:before {
+  #hero-1618 .cs-background:before, #hero-1619 .cs-background:before {
     background: linear-gradient(90deg, #111926 21.41%, rgba(17, 25, 38, 0.72) 34.98%, rgba(17, 25, 38, 0) 62.53%);
     opacity: 1;
   }
-  #cart-page {
-    padding-top: clamp(5rem, 25.95vw, 16.75rem);
+  #cart-page, #hero-1619 {
+    padding: var(--sectionPadding);
+    padding-top: clamp(7rem, 15vw, 8rem);
+    position: relative;
+    z-index: 1;
+    height: 100%;
   }
   #collection-1602 .cs-content {
     flex-direction: row;
