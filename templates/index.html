@@ -16,7 +16,7 @@
         <div class="cs-content">
             <div class="cs-left">
                 <h1 class="cs-title">The Standard In Professional Cleaning. Leave Finding The Pressure To Us!</h1>
-                <a href="" class="cs-button-solid">Shop Now</a>
+                <a href="#" id="shopNowButton" class="cs-button-solid">Shop Now</a>
             </div>
             <div class="cs-right">
                 <img src="/static/AMR_Logo1.png" alt="Company Logo" class="cs-logo">
@@ -41,22 +41,22 @@
 </section>
 <section id="collection-1552">
     <div class="cs-container">
-        <h1 class="cs-title">Shop By Department</h1>
+        <h1 class="cs-title" id="byDepartment">Shop By Department</h1>
         <ul class="cs-card-group">
                 <li class="cs-item cs-item-offer">
-                    <div class="cs-text-wrapper">
+<!--                    <div class="cs-text-wrapper">-->
     <!--                    <span class="cs-offer-tag">ONLY $20</span>-->
-                        <a class="cs-category" href="{{ url_for('PetrolPowered') }}">Petrol Washers</a>
-                        <picture class="cs-background" aria-hidden="true">
-                            <source media="(max-width: 600px)"
-                                    srcset="/static/washer1.jpg">
-                            <source media="(min-width: 601px)"
-                                    srcset="/static/washer1.jpg">
-                            <img loading="lazy" decoding="async"
-                                    src="/static/washer1.jpg">
-                                    width="365" height="201">
-                        </picture>
-                    </div>
+                    <a class="cs-category" href="{{ url_for('PetrolPowered') }}">Petrol Washers</a>
+                    <picture class="cs-background" aria-hidden="true">
+                        <source media="(max-width: 600px)"
+                                srcset="/static/washer1.jpg">
+                        <source media="(min-width: 601px)"
+                                srcset="/static/washer1.jpg">
+                        <img loading="lazy" decoding="async"
+                                src="/static/washer1.jpg">
+                                width="365" height="201">
+                    </picture>
+<!--                    </div>-->
                 </li>
             <li class="cs-item">
                 <a class="cs-category" href="{{ url_for('DieselPowered') }}">Diesel Washers</a>
@@ -170,6 +170,27 @@
         </div>
     </div>
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const shopNowButton = document.getElementById('shopNowButton');
+        const shopSection = document.getElementById('collection-1552');
+
+        if (shopNowButton && shopSection) {
+            shopNowButton.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default anchor behavior
+
+                // Adjust scroll to account for padding/margin
+                const sectionTop = shopSection.getBoundingClientRect().top + window.pageYOffset;
+                const offsetAdjustment = 20; // Adjust this value to account for padding/margin
+
+                window.scrollTo({
+                    top: sectionTop - offsetAdjustment,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+</script>
 {% endblock %}
 {% block footer %}
 {{ super () }}

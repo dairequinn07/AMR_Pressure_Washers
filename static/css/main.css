@@ -853,16 +853,9 @@ body.product-page {
     height: auto;
     /* 40px - 80px top & bottom, 24px - 40px sides*/
     padding: clamp(2.5rem, 8vw, 5rem) clamp(1.5rem, 4vw, 2.5rem);
-    align-items: flex-end;
+    align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Subtle shadow */
     grid-row: span 1;
-  }
-  #collection-1552 .cs-item-offer:hover {
-    /* prevents the first images from having a hover effect, its not necessary */
-  }
-  #collection-1552 .cs-item-offer:hover .cs-background img {
-    opacity: 1;
-    transform: scale(1);
   }
   #collection-1552 .cs-offer-tag {
     font-size: 0.8125rem;
@@ -875,10 +868,6 @@ body.product-page {
     color: #f7f7f7;
     background-color: var(--secondary);
     display: block;
-  }
-  #collection-1552 .cs-text-wrapper {
-    /* 150px - 265px */
-    max-width: clamp(9.375rem, 20vw, 16.5625rem);
   }
   #collection-1552 .cs-h3 {
     font-size: var(--headerFontSize);
