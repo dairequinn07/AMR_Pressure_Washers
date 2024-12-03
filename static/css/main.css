@@ -1727,7 +1727,7 @@ body.product-page {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    height: 100%;
+    height: 100vh;
   }
 }
 
