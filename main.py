@@ -15,11 +15,11 @@ EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
 
-# client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
-#                 environment='production')
+client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
+                environment='production')
 
-client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN']),
-                environment='sandbox')
+# client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN']),
+#                 environment='sandbox')
 
 
 # Step 3: Add HTTPS redirection before any request is processed
@@ -67,7 +67,7 @@ def fetch_location_id(access_token):
 
 # Function to create a payment link dynamically
 def create_payment_link():
-    location_id = os.environ.get('SAND_LOCATION_ID')
+    location_id = os.environ.get('LOCATION_ID')
     data = request.get_json()
     delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup' if not provided
     pickup_address = '21 Annaghmore Rd, Cookstown BT80 0JQ'
@@ -81,7 +81,7 @@ def create_payment_link():
             'name': item['Name'],
             'quantity': str(item['Quantity']),
             'base_price_money': {
-                'amount': int(item['Price'] * 100),
+                'amount': 0,
                 'currency': 'GBP',
             }
         }
