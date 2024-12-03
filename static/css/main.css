@@ -358,7 +358,7 @@ body.product-page {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    height: 100%;
+    min-height: 100vh;
   }
   #whyChooseUs {
     padding: var(--sectionPadding);
@@ -1727,7 +1727,7 @@ body.product-page {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    height: 100vh;
+    min-height: 100vh;
   }
 }
 
@@ -1767,7 +1767,7 @@ body.product-page {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    height: 100%;
+    min-height: 100vh;
   }
   #collection-1602 .cs-content {
     flex-direction: row;
