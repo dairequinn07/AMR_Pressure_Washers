@@ -1068,6 +1068,7 @@ body.product-page {
   #cs-navigation.cs-active .cs-ul-wrapper {
     transform: scaleY(1);
     transition-delay: 0.15s;
+    background-color: #252525
   }
   #cs-navigation.cs-active .cs-li {
     opacity: 1;
@@ -1189,7 +1190,7 @@ body.product-page {
     width: 100%;
     height: auto;
     padding-bottom: 2.4em;
-    background-color: #fff;
+    background-color: #252525;
     border-radius: 0 0 1.5rem 1.5rem;
     position: absolute;
     top: 85%;
@@ -1273,10 +1274,10 @@ body.product-page {
     position: relative;
   }
   #cs-navigation .cs-li-link.cs-active {
-    color: var(--primary);
+    color: white;
   }
   #cs-navigation .cs-li-link:hover {
-    color: var(--primary);
+    color: #E5383B;
   }
   #cs-navigation .cs-button-solid {
     display: none;
@@ -1287,7 +1288,7 @@ body.product-page {
     display: block;
   }
   #cs-navigation .cs-dropdown {
-    color: var(--bodyTextColorWhite);
+    color: #252525;
     position: relative;
   }
   #cs-navigation .cs-dropdown.cs-active .cs-drop-ul {
@@ -1303,7 +1304,7 @@ body.product-page {
   #cs-navigation .cs-dropdown .cs-li-link {
     position: relative;
     transition: opacity 0.3s;
-    color: black;
+    color: white;
   }
   #cs-navigation .cs-drop-icon {
     width: 0.9375rem;
@@ -1318,7 +1319,7 @@ body.product-page {
     height: 0;
     margin: 0;
     padding: 0;
-    background-color: #fff;
+    background-color: #E5383B;
     opacity: 0;
     display: flex;
     visibility: hidden;
@@ -1342,13 +1343,13 @@ body.product-page {
     /* prevents padding from affecting height and width */
     box-sizing: border-box;
     padding: 0.75rem;
-    color: var(--headerColor);
+    color: white;
     display: block;
     transition: color 0.3s, background-color 0.3s;
   }
   #cs-navigation .cs-li-link.cs-drop-link:hover {
-    color: var(--bodyTextColorWhite);
-    background-color: var(--primary);
+    color: white;
+    background-color: #E5383B;
   }
   #cs-navigation .cs-li-link.cs-drop-link:before {
     display: none;
@@ -1409,10 +1410,10 @@ body.product-page {
     min-width: 12.5rem;
     margin: 0;
     padding: 0;
-    background-color: #fff;
+    background-color: #252525;
     box-shadow: inset rgba(149, 157, 165, 0.1) 0px 8px 10px;
     opacity: 0;
-    border-bottom: 5px solid var(--primary);
+    border-bottom: 5px solid #E5383B;
     border-radius: 0 0 1.5rem 1.5rem;
     visibility: hidden;
     /* if you have 8 or more links in your dropdown nav, uncomment the columns property to make the list into 2 even columns. Change it to 3 or 4 if you need extra columns. Then remove the transition delays on the cs-drop-li so they don't have weird scattered animations */
@@ -1472,13 +1473,13 @@ body.product-page {
     /* prevents padding from affecting height and width */
     box-sizing: border-box;
     padding: 0.75rem;
-    color: var(--headerColor);
+    color: white;
     display: block;
     transition: color 0.3s, background-color 0.3s;
   }
   #cs-navigation .cs-li-link.cs-drop-link:hover {
-    color: var(--bodyTextColorWhite);
-    background-color: var(--primary);
+    color: white;
+    background-color: #E5383B;
   }
   #cs-navigation .cs-li-link.cs-drop-link:before {
     display: none;
