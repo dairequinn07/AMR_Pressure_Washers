@@ -67,7 +67,7 @@ def fetch_location_id(access_token):
 
 # Function to create a payment link dynamically
 def create_payment_link():
-    location_id = os.environ.get('SQUARE_LOCATION_ID')
+    location_id = os.environ.get('SAND_LOCATION_ID')
     data = request.get_json()
     delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup' if not provided
     pickup_address = '21 Annaghmore Rd, Cookstown BT80 0JQ'
@@ -142,10 +142,8 @@ def squareAuthorization():
     if not authorization_code:
         return "Authorization code missing", 400
 
-    # client_id = os.environ.get("SQUARE_APPLICATION_ID")
-    # client_secret = os.environ.get("SQUARE_SECRET")
-    client_id = os.environ.get("SAND_APPLICATION_ID")
-    client_secret = os.environ.get("SAND_SECRET")
+    client_id = os.environ.get("SQUARE_APPLICATION_ID")
+    client_secret = os.environ.get("SQUARE_SECRET")
     redirect_uri = "https://amrpressurewashers-37d8c0c7dd80.herokuapp.com/squareAuthorization"
 
     # Token exchange request
