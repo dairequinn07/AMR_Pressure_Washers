@@ -67,7 +67,7 @@ def fetch_location_id(access_token):
 
 # Function to create a payment link dynamically
 def create_payment_link():
-    location_id = os.environ.get('LOCATION_ID')
+    location_id = os.environ.get('SQUARE_LOCATION_ID')
     data = request.get_json()
     delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup' if not provided
     pickup_address = '21 Annaghmore Rd, Cookstown BT80 0JQ'
