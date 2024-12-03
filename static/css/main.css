@@ -193,7 +193,7 @@ body.product-page {
     border-radius: 8px;
     padding: 20px;
     background-color: #fff;
-    max-height: 500px; /* Set a fixed height */
+    max-height: 600px; /* Set a fixed height */
     display: flex;
     gap: 0.5rem;
     flex-direction: column; /* Ensure proper alignment of children */
@@ -359,6 +359,9 @@ body.product-page {
     position: relative;
     z-index: 1;
     height: 100%;
+  }
+  #hero-1619 {
+    height: 100vh;
   }
   #whyChooseUs {
     padding: var(--sectionPadding);
@@ -1684,6 +1687,9 @@ body.product-page {
     z-index: 1;
     height: 100%;
   }
+  #hero-1619 {
+    height: 100vh;
+  }
 }
 
 /* Tablet - 768px */
@@ -1723,6 +1729,9 @@ body.product-page {
     position: relative;
     z-index: 1;
     height: 100%;
+  }
+  #hero-1619 {
+    height: 100vh;
   }
   #collection-1602 .cs-content {
     flex-direction: row;

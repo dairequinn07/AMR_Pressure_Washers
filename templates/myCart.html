@@ -56,6 +56,10 @@
                         <input type="radio" name="deliveryOption" value="pickup">
                         Store Pickup: Free
                     </label>
+                    <div id="store-address" style="display: none; text-align: center; margin-top: 20px;">
+                        <strong>Store Address:</strong>
+                        <p>21 ANNAGHMORE ROAD, COOKSTOWN, BT80 0JQ</p>
+                    </div>
                 </div>
                 <div class="summary-item total">
                     <span>Total</span>
@@ -79,9 +83,14 @@ const totalPriceElement = document.getElementById('total-price');
 function updateSummary(deliveryOption) {
     let deliveryFee = 0;
     const itemPrices = document.querySelectorAll('.cs-price');
+    const storeAddress = document.getElementById('store-address');
 
     if (deliveryOption === 'delivery') {
         deliveryFee = 30;
+        storeAddress.style.display = 'none'; // Hide store address
+    }   else if (deliveryOption === 'pickup') {
+        deliveryFee = 0;
+        storeAddress.style.display = 'block'; // Show store address
     }
 
     // Calculate the new subtotal

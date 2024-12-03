@@ -67,22 +67,25 @@ def create_payment_link():
     location_id = os.environ.get('SQUARE_LOCATION_ID')
     data = request.get_json()
     delivery_option = data.get('deliveryOption', 'pickup')  # Default to 'pickup' if not provided
+    pickup_address = '21 Annaghmore Rd, Cookstown BT80 0JQ'
+
     # Get cart items from session
     cart = session.get('cart', [])
 
     # Create line items dynamically from the cart
-    line_items = []
-    for item in cart:
-        line_items.append({
-            'name': item['Name'],  # Product name
-            'quantity': str(item['Quantity']),  # Quantity must be a string
+    line_items = [
+        {
+            'name': item['Name'],
+            'quantity': str(item['Quantity']),
             'base_price_money': {
-                'amount': int(item['Price'] * 100),  # Square expects amount in the smallest currency unit
-                'currency': 'GBP'  # Adjust to your store's currency
+                'amount': int(item['Price'] * 100),
+                'currency': 'GBP',
             }
-        })
+        }
+        for item in cart
+    ]
 
-    # Add delivery fee if selected
+    # Add delivery fee if applicable
     if delivery_option == 'delivery':
         line_items.append({
             'name': 'Delivery Fee',
@@ -90,20 +93,32 @@ def create_payment_link():
             'base_price_money': {
                 'amount': 3000,
                 'currency': 'GBP',
-            },
+            }
         })
 
-    # Generate the payment link using Square's Checkout API
+    # Build the order body
+    order_body = {
+        "location_id": location_id,
+        "line_items": line_items,
+    }
+
+    # Add metadata and shipping options
+    metadata = {"delivery_option": delivery_option}
+    if delivery_option == 'pickup':
+        metadata["pickup_address"] = pickup_address
+    order_body["metadata"] = metadata
+
+    # Set checkout options
+    checkout_options = {
+        "redirect_url": url_for('checkout_success', _external=True),
+        "ask_for_shipping_address": (delivery_option == 'delivery'),
+    }
+
+    # Generate the payment link
     response = client.checkout.create_payment_link(
         body={
-            "order": {
-                "location_id": location_id,  # Replace with your actual location ID
-                "line_items": line_items,  # Use dynamically created line items
-            },
-            "checkout_options": {
-                "redirect_url": url_for('checkout_success', _external=True),  # Redirect after successful payment
-                "ask_for_shipping_address": (delivery_option == 'delivery'), # collect shipping details for delivery
-            }
+            "order": order_body,
+            "checkout_options": checkout_options,
         }
     )
 
@@ -111,8 +126,8 @@ def create_payment_link():
     if response.is_success():
         return response.body['payment_link']  # Return the payment link
     else:
-        # Print errors for debugging
-        print("Error creating payment link:", response.errors)
+        # Improved error logging
+        print(f"Error creating payment link: {response.errors}")
         return None
 
 
