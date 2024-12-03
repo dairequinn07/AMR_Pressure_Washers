@@ -82,22 +82,25 @@ const totalPriceElement = document.getElementById('total-price');
 // Function to update delivery fee and total
 function updateSummary(deliveryOption) {
     let deliveryFee = 0;
-    const itemPrices = document.querySelectorAll('.cs-price');
+    const cartItems = document.querySelectorAll('.cart-item');
     const storeAddress = document.getElementById('store-address');
 
     if (deliveryOption === 'delivery') {
         deliveryFee = 30;
         storeAddress.style.display = 'none'; // Hide store address
-    }   else if (deliveryOption === 'pickup') {
+    } else if (deliveryOption === 'pickup') {
         deliveryFee = 0;
         storeAddress.style.display = 'block'; // Show store address
     }
 
     // Calculate the new subtotal
     let newSubtotal = 0;
-    itemPrices.forEach(price => {
-        const amount = parseFloat(price.textContent.replace('£', ''));
-        newSubtotal += amount;
+    cartItems.forEach(item => {
+        const priceElement = item.querySelector('.cs-price');
+        const quantityElement = item.querySelector('.cart-item-quantity');
+        const price = parseFloat(priceElement.textContent.replace('£', ''));
+        const quantity = parseInt(quantityElement.textContent.replace('Quantity: ', ''), 10);
+        newSubtotal += price * quantity; // Multiply price by quantity
     });
 
     // Update the DOM

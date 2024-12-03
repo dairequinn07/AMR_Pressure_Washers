@@ -81,7 +81,7 @@ def create_payment_link():
             'name': item['Name'],
             'quantity': str(item['Quantity']),
             'base_price_money': {
-                'amount': 0,
+                'amount': int(item['Price'] * 100),
                 'currency': 'GBP',
             }
         }
