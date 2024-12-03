@@ -15,8 +15,11 @@ EXCEL_FILE = 'products.xlsx'
 products_df = pd.read_excel(EXCEL_FILE)
 
 
-client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
-                environment='production')
+# client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
+#                 environment='production')
+
+client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN']),
+                environment='sandbox')
 
 
 # Step 3: Add HTTPS redirection before any request is processed
@@ -139,8 +142,10 @@ def squareAuthorization():
     if not authorization_code:
         return "Authorization code missing", 400
 
-    client_id = os.environ.get("SQUARE_APPLICATION_ID")
-    client_secret = os.environ.get("SQUARE_SECRET")
+    # client_id = os.environ.get("SQUARE_APPLICATION_ID")
+    # client_secret = os.environ.get("SQUARE_SECRET")
+    client_id = os.environ.get("SAND_APPLICATION_ID")
+    client_secret = os.environ.get("SAND_SECRET")
     redirect_uri = "https://amrpressurewashers-37d8c0c7dd80.herokuapp.com/squareAuthorization"
 
     # Token exchange request
