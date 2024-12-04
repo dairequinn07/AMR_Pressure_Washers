@@ -7,7 +7,7 @@
 
 {% block body %}
     {{ super () }}
-<body class="product-page">
+
 <section id="hero-1619">
     <div class="cs-container">
         <div class="cs-content">
@@ -53,5 +53,7 @@ document.querySelector('.cs-button-solid').addEventListener('click', function() 
     .catch(error => console.error('Error:', error));
 });
 </script>
-</body>
+{% endblock %}
+{% block footer %}
+{{ super () }}
 {% endblock %}

@@ -26,9 +26,6 @@ body {
     color: black;
     height: 100%;
 }
-body.product-page {
-    background-color: #252525;
-}
 *, *:before, *:after {
     /* prevents padding from affecting height and width */
     box-sizing: border-box;
@@ -358,7 +355,10 @@ body.product-page {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    height: 100%;
+    min-height: 100vh;
+  }
+  #hero-1619 {
+    background-color: #252525;
   }
   #whyChooseUs {
     padding: var(--sectionPadding);
