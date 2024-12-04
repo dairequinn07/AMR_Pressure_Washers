@@ -6,11 +6,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<!--  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-48x48.png') }}" sizes="48x48">-->
-<!--  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">-->
-<!--  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">-->
-<!--  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">-->
-<!--  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">-->
+  <link rel="icon" type="image/png" href="/static/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/static/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+  <link rel="manifest" href="/static/favicon/site.webmanifest" />
 <!--  <script async src=""></script>-->
 <!-- Google Tag Manager -->
 <!--  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':-->
@@ -24,11 +25,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="theme-color" content="#fafafa;"/>
   <meta name="viewport" content="initial-scale=1.0, width=device-width, height=device-height"/>
-<!--  <meta name="apple-mobile-web-app-capable" content="yes" />-->
-<!--  <meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
-<!--  <meta name="description" content="WebDazigns provides custom web development and design services in Belfast, Northern Ireland. We build responsive websites tailored to your business needs.">-->
-<!--  <meta name="keywords" content="web development Belfast, web design Belfast, custom websites Belfast, WebDazigns, Belfast web developer">-->
-<!--  <meta name="author" content="WebDazigns">-->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="description" content="AMR Pressure Washers specializes in high-quality pressure washers for residential and commercial use in Mid Ulster, Northern Ireland. Explore our range of durable and efficient cleaning solutions.">
+  <meta name="keywords" content="pressure washers Northern Ireland, AMR Pressure Washers, Mid Ulster cleaning equipment, pressure washer sales, industrial pressure washers, commercial pressure washers, Northern Ireland cleaning solutions">
+  <meta name="author" content="AMR Pressure Washers">
 
  <!-- Google-specific meta tags -->
   <meta name="google" content="notranslate"> <!-- Prevent translation of the page content -->
@@ -38,43 +39,39 @@
   <link rel="canonical" href="{{ request.url }}">
 
   <!-- Open Graph Tags for Social Sharing -->
-<!--  <meta property="og:title" content="WebDazigns | Custom Web Development & Design">-->
-<!--  <meta property="og:description" content="Providing custom web development services to businesses looking to establish a strong online presence.">-->
-<!--  <meta property="og:type" content="website">-->
-<!--  <meta property="og:url" content="{{ request.url }}">-->
-<!--  <meta property="og:image" content="{{ url_for('static', filename='webdazigns_logo.svg') }}">-->
-
-  <!-- Twitter Card Tags -->
-<!--  <meta name="twitter:card" content="summary_large_image">-->
-<!--  <meta name="twitter:title" content="WebDazigns | Custom Web Development & Design">-->
-<!--  <meta name="twitter:description" content="We offer responsive, custom websites tailored to your business needs.">-->
-<!--  <meta property="twitter:image:src" content="{{ url_for('static', filename='webdazigns_logo.svg') }}">-->
+  <meta property="og:title" content="AMR Pressure Washers | Mid Ulster's Leading Pressure Washer Supplier">
+  <meta property="og:description" content="Discover AMR Pressure Washers' top-quality pressure washers for residential and commercial use in Mid Ulster, Northern Ireland. Your go-to for cleaning solutions!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:image" content="{{ url_for('static', filename='AMR_Logo.jpg') }}">
 
   <!-- Structured Data Markup for SEO. Populate sameAs values later with social media pages -->
   <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "Organization",
-    "name": "",
-    "url": "",
-    "logo": "",
-    "sameAs": [],
-    "description": ""
-  }
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "AMR Pressure Washers",
+  "url": "https://www.amrpressurewashers.com",
+  "logo": "https://www.amrpressurewashers.com/static/AMR_Logo.jpg",
+  "sameAs": "https://www.facebook.com/profile.php?id=100070671737268",
+  "description": "AMR Pressure Washers offers a wide range of high-quality pressure washers for residential and commercial use in Mid Ulster, Northern Ireland. Your trusted cleaning solution provider."
+}
   </script>
 
   <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "LocalBusiness",
-  "name": "",
+  "name": "AMR Pressure Washers",
   "address": {
-    "@type": "",
-    "addressLocality": "",
-    "addressCountry": ""
+    "@type": "PostalAddress",
+    "streetAddress": "21 Annaghmore Road",
+    "addressLocality": "Cookstown",
+    "postalCode": "BT80 0JQ",
+    "addressCountry": "Northern Ireland"
   },
-  "url": "",
-  "telephone": "+"
+  "url": "https://www.amrpressurewashers.com",
+  "telephone": "+447512912741"
 }
 </script>
 
@@ -219,14 +216,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
         item.addEventListener('click', onClick)
         }
-
-<!--    function adjustHeight() {-->
-<!--      const vh = window.innerHeight * 0.01;-->
-<!--      document.documentElement.style.setProperty('&#45;&#45;vh', `${vh}px`);-->
-<!--    }-->
-
-<!--    adjustHeight();-->
-<!--    window.addEventListener('resize', adjustHeight);-->
 </script>
 {% endblock %}
 {% block footer %}
