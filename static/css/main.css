@@ -358,7 +358,7 @@ body.product-page {
     padding-top: clamp(7rem, 15vw, 8rem);
     position: relative;
     z-index: 1;
-    min-height: 100vh;
+    height: 100%;
   }
   #whyChooseUs {
     padding: var(--sectionPadding);
@@ -403,7 +403,7 @@ body.product-page {
     /* centers content horizontally, set to flex-start to left align */
     align-items: center;
   }
-  #hero-1618 .cs-topper, #hero-1619 .cs-topper {
+  #hero-1618 .cs-topper{
     /* 13px - 16px */
     font-size: clamp(0.8125rem, 1.5vw, 1rem);
     line-height: 1.2em;
@@ -419,12 +419,12 @@ body.product-page {
     gap: 0.5rem;
     position: relative;
   }
-  #hero-1618 .cs-chevron, #hero-1619 .cs-chevron {
+  #hero-1618 .cs-chevron {
     --chevronColor: var(--primary);
     width: 3rem;
     height: auto;
   }
-  #hero-1618 .cs-text, #hero-1619 .cs-text {
+  #hero-1618 .cs-text {
     /* 16px - 20px */
     font-size: clamp(1rem, 1.95vw, 1.25rem);
     line-height: 1.5em;
@@ -504,7 +504,7 @@ body.product-page {
     height: auto;
     margin: 0 0 1.5rem 0;
   }
-  #hero-1618 .cs-h3, #hero-1619 .cs-h3 {
+  #hero-1618 .cs-h3 {
     /* 20px - 25px */
     font-size: clamp(1.25rem, 2.5vw, 1.5625rem);
     line-height: 1.2em;
@@ -522,7 +522,7 @@ body.product-page {
     padding: 0;
     color: var(--bodyTextColor);
   }
-  #hero-1618 .cs-background, #hero-1619 .cs-background {
+  #hero-1618 .cs-background {
     width: 100%;
     height: 100%;
     display: block;
@@ -532,7 +532,7 @@ body.product-page {
     z-index: -2;
   }
 
-  #hero-1618 .cs-background img, #hero-1619 .cs-background img {
+  #hero-1618 .cs-background img {
     position: absolute;
     top: 0;
     left: 0;
@@ -1687,13 +1687,16 @@ body.product-page {
   #cs-navigation .cs-button-solid:hover:before {
     width: 100%;
   }
+  #hero-1619 {
+    padding-top: clamp(10rem, 20vw, 12rem);
+  }
 }
 /* Large Desktop - 1300px */
 @media only screen and (min-width: 81.25rem) {
   #cs-navigation .cs-social {
     display: flex;
   }
-  #hero-1618 .cs-background, #hero-1619 .cs-background {
+  #hero-1618 .cs-background {
     background: url("/static/background3.png");
     background-size: cover;
     background-position: center;
@@ -1701,10 +1704,10 @@ body.product-page {
     /* creates the parallax effect */
     background-attachment: fixed;
   }
-  #hero-1618 .cs-container, #hero-1619 .cs-container, #whyChooseUs .cs-container {
+  #hero-1618 .cs-container, #whyChooseUs .cs-container {
     justify-content: unset;
   }
-  #hero-1618 .cs-background img, #hero-1619 .cs-background img {
+  #hero-1618 .cs-background img {
     display: none;
   }
   #hero-1618 .cs-content, #hero-1619 .cs-content {
@@ -1722,12 +1725,8 @@ body.product-page {
   #whyChooseUs .cs-content {
     flex-direction: column;
   }
-  #cart-page, #hero-1619 {
-    padding: var(--sectionPadding);
-    padding-top: clamp(7rem, 15vw, 8rem);
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
+  #hero-1619 {
+    padding-top: clamp(10rem, 20vw, 12rem);
   }
 }
 
@@ -1755,19 +1754,12 @@ body.product-page {
   #whyChooseUs .cs-item {
     grid-column: span 3;
   }
-  #hero-1618 .cs-background, #hero-1619 .cs-background {
+  #hero-1618 .cs-background {
     height: 100%;
   }
-  #hero-1618 .cs-background:before, #hero-1619 .cs-background:before {
+  #hero-1618 .cs-background:before {
     background: linear-gradient(90deg, #111926 21.41%, rgba(17, 25, 38, 0.72) 34.98%, rgba(17, 25, 38, 0) 62.53%);
     opacity: 1;
-  }
-  #cart-page, #hero-1619 {
-    padding: var(--sectionPadding);
-    padding-top: clamp(7rem, 15vw, 8rem);
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
   }
   #collection-1602 .cs-content {
     flex-direction: row;
@@ -1801,6 +1793,9 @@ body.product-page {
   }
   #cs-navigation .cs-contact-group {
     display: flex;
+  }
+  #hero-1619 {
+    padding-top: clamp(10rem, 20vw, 12rem);
   }
 }
 
