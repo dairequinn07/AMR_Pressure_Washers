@@ -1697,7 +1697,7 @@ body {
     display: flex;
   }
   #hero-1618 .cs-background {
-    background: url("/static/background3.png");
+    background: url("/static/background3.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
