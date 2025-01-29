@@ -10,10 +10,6 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
 
-# Load the Excel file once
-EXCEL_FILE = 'products.xlsx'
-products_df = pd.read_excel(EXCEL_FILE)
-
 
 client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
                 environment='production')
@@ -210,7 +206,7 @@ def checkout_success():
 @app.route('/add-to-cart', methods=['POST'])
 def add_to_cart():
     product = request.get_json()  # Get the product data from the request
-    product_id = int(product['ID'])
+    product_id = product['ID']
 
     # Initialize the cart in session if it doesn't exist
     if 'cart' not in session:
@@ -246,55 +242,289 @@ def sum_filter(cart, attribute, attr=None):
     return sum(float(item[attribute]) for item in cart)
 
 
-@app.route('/product/<int:product_id>')
+@app.route('/product/<product_id>')
 def product_page(product_id):
-    # Fetch the row matching the product_id
-    product_row = products_df.iloc[product_id - 1]  # Adjust for 0-indexing
-    product = {
-        'ID': product_id,
-        'Name': product_row['Name'],
-        'Price': product_row['Price'],
-        'Description': product_row['Description'],
-        'ImageURLs': product_row['ImageURLs'],
-        # 'Features': product_row['Features'].split('\n')  # Assume features are newline-separated
-        'Stock': product_row['Stock'],
-    }
-    return render_template('productPage.html', product=product)
+    product_row = []
+    for i, item in enumerate(products):
+        if item['ID'] == product_id:
+            product_row = item
+    return render_template('productPage.html', product=product_row)
 
 
 @app.route('/PetrolPowered')
 def PetrolPowered():
-    products = products_df[products_df['Department'] == 'Petrol Washer'].to_dict(orient='records')
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    petrol_washers_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'Petrol Washers':
+            petrol_washers_cat_id = category['id']
+
+    # Create a dictionary to map image IDs to URLs
+    image_map = {image['id']: image['image_data']['url'] for image in images_body if 'image_data' in image}
+
+    for i, item in enumerate(items_body):
+        item_image_id = item['item_data'].get('image_ids', [None])[0]
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": image_map.get(item_image_id, ""),  # Match image ID to URL
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == petrol_washers_cat_id:
+            products.append(product)
     return render_template('petrolWashers.html', products=products)
 
 
 @app.route('/DieselPowered')
 def DieselPowered():
-    products = products_df[products_df['Department'] == 'Diesel Washer'].to_dict(orient='records')
-    return render_template('dieselWashers.html', products=products)
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    diesel_washers_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'Diesel Washers':
+            diesel_washers_cat_id = category['id']
+
+    for i, item in enumerate(items_body):
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": images_body[i]['image_data']['url'] if 'url' in images_body[i]['image_data'] else "",
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == diesel_washers_cat_id:
+            products.append(product)
+    return render_template('petrolWashers.html', products=products)
 
 
 @app.route('/ElectricPowered')
 def ElectricPowered():
-    products = products_df[products_df['Department'] == 'Electric Washer'].to_dict(orient='records')
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    electric_washers_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'Electric Washers':
+            electric_washers_cat_id = category['id']
+
+    for i, item in enumerate(items_body):
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": images_body[i]['image_data']['url'] if 'url' in images_body[i]['image_data'] else "",
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == electric_washers_cat_id:
+            products.append(product)
     return render_template('electricWashers.html', products=products)
 
 
 @app.route('/PTOPowered')
 def PTOPowered():
-    products = products_df[products_df['Department'] == 'PTO Washer'].to_dict(orient='records')
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    pto_washers_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'PTO Washers':
+            pto_washers_cat_id = category['id']
+
+    for i, item in enumerate(items_body):
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": images_body[i]['image_data']['url'] if 'url' in images_body[i]['image_data'] else "",
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == pto_washers_cat_id:
+            products.append(product)
     return render_template('ptoWashers.html', products=products)
+
+
+@app.route('/HotCold')
+def HotCold():
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    hotcold_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'Hot/Cold':
+            hotcold_cat_id = category['id']
+
+    for i, item in enumerate(items_body):
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": images_body[i]['image_data']['url'] if 'url' in images_body[i]['image_data'] else "",
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == hotcold_cat_id:
+            products.append(product)
+    return render_template('parts.html', products=products)
 
 
 @app.route('/Generators')
 def Generators():
-    products = products_df[products_df['Department'] == 'Generator'].to_dict(orient='records')
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    generators_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'Generators':
+            generators_cat_id = category['id']
+
+    for i, item in enumerate(items_body):
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": images_body[i]['image_data']['url'] if 'url' in images_body[i]['image_data'] else "",
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == generators_cat_id:
+            products.append(product)
     return render_template('generators.html', products=products)
 
 
 @app.route('/Parts')
 def Parts():
-    products = products_df[products_df['Department'] == 'Parts'].to_dict(orient='records')
+    global products
+    products = []
+    category = client.catalog.list_catalog(types="CATEGORY")
+    items = client.catalog.list_catalog(types="ITEM")
+    images = client.catalog.list_catalog(types="IMAGE")
+    category_body = category.body['objects']
+    items_body = items.body['objects']
+    images_body = images.body['objects']
+    parts_cat_id = False
+
+    for i, category in enumerate(category_body):
+        if category['category_data']['name'] == 'Parts':
+            parts_cat_id = category['id']
+
+    for i, item in enumerate(items_body):
+        product = {
+            "Name": item['item_data']['name'] if 'name' in item['item_data'] else "",
+            "Category": (
+                item.get('item_data', {})
+                .get('categories', [{}])[0]
+                .get('id', "")),
+            "Description": item['item_data']['description'] if 'description' in item['item_data'] else "",
+            "Price": item['item_data']['variations'][0]['item_variation_data']['price_money']['amount'] / 100,
+            "ImageURLs": images_body[i]['image_data']['url'] if 'url' in images_body[i]['image_data'] else "",
+            "OutOfStock": (
+                item.get('item_data', {})
+                .get('variations', [{}])[0]
+                .get('item_variation_data', {})
+                .get('location_overrides', [{}])[0]
+                .get('sold_out', False)),
+            "ID": item['id']  # Assuming each item has a unique 'id'
+        }
+        if product['Category'] == parts_cat_id:
+            products.append(product)
     return render_template('parts.html', products=products)
 
 
@@ -308,10 +538,10 @@ def MyCart():
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     data = request.get_json()
-    item_id = int(data.get('id'))  # Get the item ID from the request
+    item_id = data.get('id')  # Get the item ID from the request
 
     if 'cart' in session:
-        session['cart'] = [item for item in session['cart'] if int(item['ID']) != int(item_id)]
+        session['cart'] = [item for item in session['cart'] if item['ID'] != item_id]
         session.modified = True  # Mark the session as modified
 
         return jsonify({

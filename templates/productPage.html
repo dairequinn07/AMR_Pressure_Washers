@@ -14,7 +14,7 @@
                 <h1 class="cs-title" style="color: white;">{{ product['Name'] }}</h1>
                 <span class="cs-price">£{{ product['Price'] }}</span>
                 <p style="color: white;">{{ product['Description'] }}</p>
-                {% if product['Stock'] > 0 %}
+                {% if product['OutOfStock'] %}
                     <button class="cs-button-solid" style="background-color: green;">Add to Cart</button>
                 {% else %}
                     <button class="cs-button-solid" disabled>Out of Stock</button>
