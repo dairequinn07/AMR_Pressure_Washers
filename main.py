@@ -8,7 +8,7 @@ from square.http.auth.o_auth_2 import BearerAuthCredentials
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
 
 client = Client(bearer_auth_credentials=BearerAuthCredentials(access_token=os.environ['SQUARE_ACCESS_TOKEN_PROD']),
